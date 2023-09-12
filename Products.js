@@ -1,39 +1,78 @@
-class ProductManager{
+const fs = require('fs')
+
+class ProductManager{    
     #prodId = 0
+    // #path = "./Productos.txt"
     constructor(){
+        // this.products = []
+        this.path = "./productos.txt"
         this.products = []
     }
     addProduct(title, descipion, price, thumbnail, code, stock){
-        let index = this.products.findIndex((item) => item.code === code);
-        if(index >= 0){return(1);}
-        this.products.push({id:this.#prodId,title:title, descipion:descipion, price:price, thumbnail:thumbnail, code:code, stock:stock});
-        console.log(this.products,"productos")
-        this.#prodId++;
-        return(0);
+        if(!fs.existsSync(this.path)){
+            let arr = []
+            arr.push({id:this.#prodId,title:title,descipion:descipion,price:price,thumbnail,thumbnail,code:code,stock:stock})
+            return(fs.promises.writeFile(this.path,JSON.stringify(arr))
+            .then((r) => {return(0)})
+            .catch((e) => {return(2)})
+            )
+        }
+        return(fs.promises.readFile(this.path,'utf-8')
+        .then((r) => {
+            let arr = JSON.parse(r)
+            let index = arr.findIndex((item) => item.code === code)
+            if(index >= 0) {return(1)}
+            arr.push({id:this.#prodId,title:title,descipion:descipion,price:price,thumbnail,thumbnail,code:code,stock:stock})
+            this.#prodId++
+            fs.promises.writeFile(this.path,JSON.stringify(arr))
+            .then((r) => {return(0)})
+            .catch((e) => {return(2)})
+        })
+        .catch((e) => {
+            console.log(e, "error")
+            return(3)
+        }))
     }
     getProducts(){
-        return(this.products);
+        // if(fs.existsSync(this.path)){
+            // console.log("aca")
+        return(fs.promises.readFile(this.path)
+        .then((r) =>{
+            // console.log("ahora aca",r)
+            let prods = JSON.parse(r)
+            return(prods)
+        })
+        .catch((e) =>{
+            return([])
+        }))
+        // }
     }
     getProductById(prodId){
-        let index = this.products.findIndex((item) => item.id === prodId);
-        if(index < 0){
-            // console.log("Producto no existente")
-            return("Producto no existente");
-        }
-        return(this.products[index])
+        return(fs.promises.readFile(this.path)
+        .then((r) =>{
+            let prods = JSON.parse(r)
+            let prod = prods.find((item)=> item.id = prodId)
+            console.log(prod)
+            return(prod)
+        })
+        .catch((e) => {
+            return(e)
+        }))
     }
 }
 let manager = new ProductManager()
-console.log(manager.getProducts())
-//intentare agregar 3 veces el mismo producto, la salida deberia ser producto existente*2
+// console.log(manager.getProducts())
+manager.getProducts()
+.then((r) => console.log(r, "Productos"))
+.catch((e) => console.log("err","e"))
 for(let i = 0; i<3; i++){
-    if(manager.addProduct("producto de prueba","Este es un producto de prueba",200,"sin imagen","abc123",25) >0){
-        console.log("Producto existente -> intento ",i);
-    } else {
-        console.log("Producto agregado con exito")
-    }
+    manager.addProduct("producto de prueba","Este es un producto de prueba",200,"sin imagen","abd123",25)
+    .then((r) =>{
+        if(r >0){
+            console.log("error en el intento ",i,"de agregar el producto", r);
+        } else{
+            console.log("Producto agregado con exito")
+        }
+    }).catch((e) => console.log("error",e))
 }
-prosducts = manager.addProduct("producto de prueba","Este es un producto de prueba",200,"sin imagen","abc123",25);
-console.log(manager.getProducts())
-console.log("id->   1",manager.getProductById(1)) //producto no existente
-console.log("id->   0",manager.getProductById(0)) //producto existente
+// console.log(manager.getProducts(),"Productos")
