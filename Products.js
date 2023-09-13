@@ -52,6 +52,7 @@ class ProductManager{
                 let index = arr.findIndex((item) => item.id === prodId)
                 if(index <0) {return (1)}
                 arr[index][field] = value
+                console.log("update", arr)
                 fs.promises.writeFile(this.path,JSON.stringify(arr))
                 .then((r) => {return (0)})
                 .catch((e) => {return(2)})
@@ -104,20 +105,26 @@ class ProductManager{
 console.log("Comienzo")
 let manager = new ProductManager()
 // console.log(manager.getProducts())
+for(let i = 0; i< 3; i++){
+    manager.addProduct("producto de prueba",
+        "Este es un producto de prueba",
+        200,
+        "sin imagen",
+        "abd123-"+i.toString(),
+        25)
+    .then((r) => console.log("respuesta de add",r))
+    .catch((e) => console.log("error de add",e))
+}
 manager.getProducts()
 .then((r) => console.log(r, "Productos"))
 .catch((e) => console.log("err","e"))
 manager.getProductById(0)
 .then((r) => console.log("respuesta de getbyId",r))
 .catch((e) => console.log("error de getbyId",e))
-// manager.addProduct("producto de prueba","Este es un producto de prueba",200,"sin imagen","Abd123",25)
-// .then((r) => console.log("respuesta de add",r))
-// .catch((e) => console.log("error de add",e))
-// console.log("Fin")
-// manager.updateProduct(0,"description","Descripcion cambiada")
-// .then((r) => console.log("respuesta update",r))
-// .catch((e) => console.log("error de update",e))
-// manager.deleteProduct(1)
+manager.updateProduct(0,"description","Descripcion cambiada")
+.then((r) => console.log("respuesta update",r))
+.catch((e) => console.log("error de update",e))
+manager.deleteProduct(1)
 // .then((r) => console.log("respuesta de borrar",r))
 // .catch((e) => console.log("Error al borrar",e))
 // console.log(manager.getProducts(),"Productos")
