@@ -93,6 +93,7 @@ export class ProductManager{
     getProductById(prodId){
         return(fs.promises.readFile(this.path)
         .then((r) =>{
+            console.log(prodId)
             let arr = JSON.parse(r)
             let index = arr.findIndex((item) => item.id === prodId)
             if(index <0) {return("Producto no encontrado")}

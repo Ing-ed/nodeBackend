@@ -9,9 +9,15 @@ app.get('/',(req,res) =>{
 })
 
 app.get("/products",(req,res) =>{
+    const limit = req.query.limit;
     let arr = []
     manager.getProducts().then((r) =>{
-        res.send(r)
+        if(limit){
+            console.log("limit", limit);
+            res.json(r.slice(0,+limit))
+        } else{
+            res.send(r)
+        }
     })
     .catch((e) => {
         res.send("ERROR")
@@ -19,7 +25,13 @@ app.get("/products",(req,res) =>{
 })
 
 app.get("/products/:pid",(req,res) => {
-    console.log(req.params)
+    manager.getProductById(+req.params.pid).then((r) =>{
+             res.send(r)
+        })
+        .catch((e) => {
+            res.send(e)
+        })
+    console.log(req)
 })
 
 app.listen(8080)
