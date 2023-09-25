@@ -3,67 +3,50 @@ import * as path from 'path'
 import { fileURLToPath } from 'url'
 import { dirname } from 'path'
 // import fs from 'fs'
+const ruta = dirname(import.meta.url);
 
 export class ProductManager{    
+    
     #prodId = 0
     // #path = "./Productos.txt"
     constructor(){
-        // this.products = []
-        // this.path = "../resources/productos.json"
-        const filename = new URL(import.meta.url);
-        const __dirname = dirname(filename.pathname);
-        console.log(__dirname)
-        // this.path = path.resolve(__dirname,"/resources/productos.json")
-        this.path = `${__dirname.replace("F:\\","")}/resources/productos.json`
-        console.log(this.path,"path")
+        console.log("Ruta",ruta);
+        this.path = "productos.json"
         this.products = []
     }
     addProduct(title, description,code, price, status, stock, category, thumbnail ){
-        if(!fs.existsSync(this.path)){
-            let arr = []
-            arr.push({id:this.#prodId,
-                title:title,
-                description:description,
-                code:code,
-                price:price,
-                status:status,
-                stock:stock,
-                category:category,
-                thumbnail:thumbnail})
-            return(fs.promises.writeFile(this.path,JSON.stringify(arr))
-            .then((r) => {return("agregadi con exito")})
-            .catch((e) => {return(e)})
-            )
-        }
-        return(fs.promises.readFile(this.path,'utf-8')
-        .then((r) => {
-            let arr = JSON.parse(r)
-            this.#prodId = arr[arr.length -1].id
-            this.#prodId++
-            let index = arr.findIndex((item) => item.code === code)
-            if(index >= 0) {return("Producto existente")}
-            arr.push({
-                id:this.#prodId,
-                title:title,
-                description:description,
-                price:price,
-                thumbnail:thumbnail,
-                code:code,
-                stock:stock
-            })
-            console.log(arr,"array")
-            this.#prodId++
-            fs.promises.writeFile(this.path,JSON.stringify(arr))
-            .then((r) => {return("Agregado con exito")})
-            .catch((e) => {
-                console.log("catch",e)
-                return(e)
-            })
+       let arr = []
+       arr.push({
+        id:this.#prodId,
+        title:title,
+        description:description,
+        code:code,
+        price:price,
+        status:status,
+        stock:stock,
+        category:category,
+        thumbnail:thumbnail
         })
-        .catch((e) => {
-            // console.log(e, "error")
-            return("arvhivo inexistente")
-        }))
+        if(fs.existsSync(this.path)){
+            return(fs.promises.readFile(this.path))
+            .then((r) => {
+                let res = JSON.parse(r);
+                let index = res.findIndex((item) => item.code === code)
+                // if(index => 0){return({message:"producto existente",codigo:code,index:index})}
+                this.#prodId = arr[arr.length -1].id
+                this.#prodId++
+                arr[0].id = this.#prodId;
+                arr = [...arr,res]
+                console.log(arr)
+                return(fs.promises.writeFile(this.path,JSON.stringify(arr)))
+                .then((r) => {
+                    this.#prodId
+                    return("agregado con exito")
+                })
+                .catch((e) => {return("error al guardar")})
+            })
+        }
+
     }
     updateProduct(prodId,field,value){
         console.log("update")
