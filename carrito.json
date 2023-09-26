@@ -1,1 +1,1 @@
-[{"cartId":0,"prodId":0,"quantity":3}]
+[{"cartId":2,"products":[{"prodId":1,"quantity":11}]},{"cartId":3,"products":[{"prodId":1,"quantity":1},{"prodId":2,"quantity":6}]}]
