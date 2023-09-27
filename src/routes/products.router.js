@@ -1,15 +1,17 @@
 import { ProductManager } from "../Products.js";
 import { Router } from "express";
+import { Validar } from "../../resources/Validacion.js";
 const router = Router();
 
-const manager = new ProductManager();
+const manager = new ProductManager("productos.json");
+// get
 router.get("/",(req,res) =>{
-    console.log("aca")
+    //console.log("aca")
     const limit = req.query.limit;
     let arr = []
     manager.getProducts().then((r) =>{
         if(limit){
-            console.log("limit", limit);
+            //console.log("limit", limit);
             res.json(r.slice(0,+limit))
         } else{
             res.send(r)
@@ -20,25 +22,49 @@ router.get("/",(req,res) =>{
     })
 })
 
+//getById
 router.get("/:pid",(req,res) => {
-    manager.getProductById(+req.params.pid).then((r) =>{
+    manager.getProductById({prodId:+req.params.pid}).then((r) =>{
              res.send(r)
         })
         .catch((e) => {
             res.send(e)
         })
-    console.log(req)
+    //console.log(req)
 })
 
+//add
 router.post("/",(req,res) =>{
-    console.log("body",req.body);
-    manager.addProduct(req.body)
-    .then((r) =>{
+    if(!Validar(req.body,"addProduct")){
+        res.send({message:"Faltan campos"})
+    } else{
+        manager.addProduct(req.body)
+        .then((r) =>{
+            res.send({message:r})
+        }) .catch((e) =>{
+            res.send({error:e})
+        })
+    }
+})
+
+//update
+router.put("/",(req,res) =>{
+    manager.updateProduct(req.body)
+    .then((r) => {
+        res.send({message:r})
+    }) .catch((e) => {
+        res.send({message:e})
+    })
+})
+
+//delete
+router.delete("/",(req,res) =>{
+    manager.deleteProduct(req.body)
+    .then((r) => {
         res.send({message:r})
     }) .catch((e) =>{
-        res.send({error:e})
+        res.send({message:e})
     })
-    // res.send(req.body)
 })
 
 export default router;
