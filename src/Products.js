@@ -200,4 +200,18 @@ export class ProductManager{
         }))
     }
 
+    getCartById({cartId}){
+        console.log(cartId, this.cartPath)
+        return(fs.promises.readFile(this.cartPath)
+        .then((r) => {
+            let carts = JSON.parse(r)
+            let index = carts.findIndex((item) => item.cartId === cartId)
+            if(index < 0){return("Carrito no encontrado")}
+            return(carts[index])
+        })
+        .catch((e) => {
+            return(e)
+        }))
+    }
+
 }
