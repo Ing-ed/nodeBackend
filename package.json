@@ -1,0 +1,16 @@
+{
+  "name": "exprss",
+  "version": "1.0.0",
+  "description": "server express coderhouse",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon ./src/app.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemon": "^3.0.1"
+  }
+}

@@ -1,0 +1,10 @@
+{
+    "title":"title",
+    "description":"description",
+    "code":"code",
+    "price":2,
+    "status":true,
+    "stock":"stock",
+    "category":"category",
+    "thumbnail":["thumbnail"]
+}
