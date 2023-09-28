@@ -1,1 +1,28 @@
-[{"prodId":1,"title":"cambio de prueba","description":"descrPrueba","code":"TIP-32C","price":27,"status":true,"stock":70,"category":"A","thumbnails":[""]},{"prodId":2,"title":"addPrueba","description":"TIP42C NPN","code":"TIP-41C","price":64,"status":true,"stock":70,"category":"A","thumbnails":[""]}]
+[
+    {
+        "prodId": 1,
+        "title": "cambio de prueba",
+        "description": "descrPrueba",
+        "code": "TIP-32C",
+        "price": 27,
+        "status": true,
+        "stock": 70,
+        "category": "A",
+        "thumbnails": [
+            ""
+        ]
+    },
+    {
+        "prodId": 2,
+        "title": "addPrueba",
+        "description": "TIP42C NPN",
+        "code": "TIP-41C",
+        "price": 64,
+        "status": true,
+        "stock": 70,
+        "category": "A",
+        "thumbnails": [
+            ""
+        ]
+    }
+]
