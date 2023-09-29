@@ -1,0 +1,16 @@
+<div class="index">
+    <h1> Lista de productos</h1>
+    {{#each prods}}
+        <div class="prod">
+            <p>{{this.title}}</p>
+            <p>{{this.description}}</p>
+            <p>{{this.price}}</p>
+        </div>
+    {{/each}}
+</div>
+<div>
+    <p>Ahora vamos a trabajar con webSocket</p>
+</div>
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

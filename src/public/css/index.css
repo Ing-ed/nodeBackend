@@ -1,0 +1,27 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+.index{
+    display: flex;
+    flex-direction: column;
+    max-width: 40em;
+    border:1px solid rebeccapurple;
+    gap: 2em;
+}
+.prod{
+    max-width: 40em;
+    max-height: 20em;
+    display: flex;
+    flex-direction: column;
+    background-color: #BBBBBB;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    align-self: center;
+    gap:1em;
+    max-width: 20em;
+    margin:1em 0;
+}
