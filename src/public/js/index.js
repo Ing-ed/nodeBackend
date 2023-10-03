@@ -1,24 +1,85 @@
 // window.alert("Hola, soy js")
+const prods = document.getElementsByClassName("prod");
+const page = document.getElementById("index");
+const productos = document.getElementById("productos")
+
+let products = []
 const socket = io();
 socket.emit("connection","Hola, esto es un socket")
 socket.emit("connection",22)
+
+console.log("emitBegin")
+socket.emit("getProducts");
+console.log("emitEND")
 
 const form = document.getElementById("form")
 form.onsubmit = (e) =>{
     e.preventDefault()
     const inputs = form.getElementsByTagName("input")
-    const prodMod = {
-        prodId : +inputs[0].value,
-        field : inputs[1].value,
-        value : inputs[2].value,
+    console.log(inputs[0].name,"ACA")
+    const prodAdd = {
+        title : inputs[0].value,
+        description : inputs[1].value,
+        code : inputs[2].value,
+        price : inputs[3].value,
+        status : true,
+        stock : inputs[4].value,
+        category : inputs[5].value,
+        thumbnails : [""]
     }
-    socket.emit("updateProd",prodMod)
-    console.log(prodMod)
+    socket.emit("addProduct",prodAdd)
+    console.log(prodAdd)
 }
 
-socket.on("updateProd",data =>{
-    console.log("data",data)
+
+const form2 = document.getElementById("form2")
+form2.onsubmit = (e) =>{
+    e.preventDefault()
+    const inputs = form2.getElementsByTagName("input")
+    const prodDelete = {
+        prodId: inputs[0].value
+    }
+    socket.emit("deleteProduct",prodDelete)
+    console.log("eliminar",prodDelete)
+}
+
+socket.on("getProducts",data =>{
+    // console.log("dataGetProds",data)
+    products = data
+    productos.innerHTML = ""
+    products.map((item,index) => {
+        productos.innerHTML += `<h3>Producto ${index}`
+        for(let i in item){
+            console.log(i,item[i])
+            productos.innerHTML += `${i} : ${item[i]}<br>`
+        }
+        productos.innerHTML += `<hr>`
+    })
+    console.log(products,"productos")
+    // data.map((item) =>{
+    //     console.log("item",item)
+    //     let prod = document.createElement('div')
+    //     prod.className = "prod"
+    //     for (let value in item){
+    //         let p = document.createElement('p');
+    //         // console.log(value)
+    //         p.innerHTML = value;
+    //         // console.log("parrafo",p)
+    //         prod.appendChild|(p)
+    //     }
+    //     page.appendChild(prod)
+
+    // })
 })
+
+// socket.on("updateProd",data =>{
+//     console.log("data",data,typeof data)
+//     let catalogo =[].slice.call(document.getElementsByClassName("prod"));
+//     catalogo.map((item) =>{
+//         console.log(item)
+//     })
+//     console.log(catalogo)
+// })
 
 // document.getElementById("modificar").addEventListener("click",()={
 //     // const prodMod = {}

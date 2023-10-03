@@ -2,7 +2,8 @@
     margin: 0;
     padding: 0;
 }
-.index{
+#index{
+    margin:0.5em ;
     display: flex;
     flex-direction: column;
     max-width: 40em;
@@ -20,8 +21,15 @@ form{
     display: flex;
     flex-direction: column;
     justify-self: center;
-    align-self: center;
-    gap:1em;
+    align-self: flex-start  ;
+    gap:0.25em;
     max-width: 20em;
     margin:1em 0;
+}
+.forms{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+    gap:2em;
 }

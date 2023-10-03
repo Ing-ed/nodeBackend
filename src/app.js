@@ -36,13 +36,40 @@ socketServer.on('connection',socket=>{
     socket.on("connection",(data) =>{
         console.log(data)
     })
-    socket.on("updateProd",data =>{
-        manager.updateProduct(data)
+
+    socket.on("getProducts" ,data =>{
+        console.log("IS")
+        manager.getProducts()
         .then((r) => {
-            socketServer.emit("updateProd",r)
+            socketServer.emit("getProducts",r)
+        })
+    })
+
+    socket.on("addProduct",data =>{
+        manager.addProduct(data)
+        .then((r) => {
+            console.log(r,"r")
+            manager.getProducts()
+            .then((r) => {
+                console.log("R -> ",r)
+                socketServer.emit("getProducts",r)
+            }) .catch((e) => socketServer.emit(e))
         }).catch((e)=>{
             socketServer.emit("updateProd",e)
         })
         console.log("recibi",data)
+    })
+
+    socket.on("deleteProduct",data=>{
+        manager.deleteProduct(data)
+        .then((r) => {
+            console.log(r,"r")
+            manager.getProducts()
+            .then((r) =>{
+                socketServer.emit("getProducts",r)
+            }).catch((e) => socketServer.emit(e))
+        }).catch((e)=>{
+            socketServer.emit("updateProd",e)
+        })
     })
 })

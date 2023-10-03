@@ -19,8 +19,8 @@ export class ProductManager{
     }
     addProduct({title,description,code,price,status,stock,category,thumbnails}){
         if(!fs.existsSync(this.filePath)){
-            let arr = []
-            arr.push({
+            // this.products = []
+            this.products.push({
                 prodId:this.#prodId,
                 title:title,
                 description:description,
@@ -39,13 +39,13 @@ export class ProductManager{
         }
         return(fs.promises.readFile(this.filePath)
         .then((r) => {
-            let arr = JSON.parse(r)
-            this.#prodId = arr[arr.length -1].prodId
+            this.products = JSON.parse(r)
+            this.#prodId = this.products[this.products.length -1].prodId
             this.#prodId++
-            let index = arr.findIndex((item) => item.code === code)
+            let index = this.products.findIndex((item) => item.code === code)
             console.log("index",index,"codeR",code)
             if(index >= 0) {return("producto existente")}
-            arr.push({
+            this.products.push({
                 prodId:this.#prodId,
                 title:title,
                 description:description,
@@ -58,7 +58,7 @@ export class ProductManager{
             })
             //console.log(arr,"array")
             this.#prodId++
-            fs.promises.writeFile(this.filePath,JSON.stringify(arr))
+            fs.promises.writeFile(this.filePath,JSON.stringify(this.products))
             .then((r) => {return("Agregado con exito")})
             .catch((e) => {return("Erroral guardar")})
         })
@@ -71,13 +71,13 @@ export class ProductManager{
         console.log("update",prodId,field,value)
         return(fs.promises.readFile(this.filePath)
             .then((r) => {
-                let arr = JSON.parse(r)
-                arr.map((t) => console.log(t.prodId))
-                let index = arr.findIndex((item) => item.prodId === prodId)
+                this.products = JSON.parse(r)
+                this.products.map((t) => console.log(t.prodId))
+                let index = this.products.findIndex((item) => item.prodId === prodId)
                 console.log("index", index)
                 if(index <0) {return ("Producto inexistente")}
-                arr[index][field] = value
-                fs.promises.writeFile(this.filePath,JSON.stringify(arr))
+                this.products[index][field] = value
+                fs.promises.writeFile(this.filePath,JSON.stringify(this.products))
                 .then((r) => {return("Actualizado con exito")})
                 .catch((e) => {return(e)})
             })
@@ -88,11 +88,11 @@ export class ProductManager{
         console.log(prodId)
         return(fs.promises.readFile(this.filePath)
         .then((r) => {
-            let arr = JSON.parse(r)
-            let index = arr.findIndex((item) => item.prodId === prodId)
+            this.products = JSON.parse(r)
+            let index = this.products.findIndex((item) => item.prodId === +prodId)
             if(index <0) {return ("producto inexistente")}
-            arr.splice(index,1)
-            fs.promises.writeFile(this.filePath,JSON.stringify(arr))
+            this.products.splice(index,1)
+            fs.promises.writeFile(this.filePath,JSON.stringify(this.products))
             .then((r) => {return("Producto eliminado")})
             .catch((e) => {return(e)})
         })
@@ -106,8 +106,8 @@ export class ProductManager{
         return(fs.promises.readFile(this.filePath)
         .then((r) =>{
             // //console.log("ahora aca",r)
-            let prods = JSON.parse(r)
-            return(prods)
+            this.products = JSON.parse(r)
+            return(this.products)
         })
         .catch((e) =>{
             return([])
@@ -118,7 +118,7 @@ export class ProductManager{
         return(fs.promises.readFile(this.filePath)
         .then((r) =>{
             console.log(prodId)
-            let arr = JSON.parse(r)
+            this.products = JSON.parse(r)
             let index = arr.findIndex((item) => item.prodId === prodId)
             if(index <0) {return("Producto no encontrado")}
             return(arr[index])
