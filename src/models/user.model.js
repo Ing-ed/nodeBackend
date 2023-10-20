@@ -1,13 +1,13 @@
 import mongoose from 'mongoose'
 
 const userCollection = 'users'; //nombre de la coleccion en la base de datos
-const userScheme = new mongoose.Schema({
-    first_name:string,
-    last_name:string,
+const userSchema = new mongoose.Schema({
+    first_name:String,
+    last_name:String,
     email:{
-        type:string,
+        type:String,
         unique:true
     }
 })
 
-export const userModel = mongoose.model(userCollection,userScheme);
+export const userModel = mongoose.model(userCollection,userSchema);

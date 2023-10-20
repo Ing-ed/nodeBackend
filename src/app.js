@@ -3,7 +3,7 @@ import handlebars from 'express-handlebars'
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
 import viewRouter from './routes/views.router.js'
-// import userRouter from '-/routes/user.router.js'
+import userRouter from './routes/user.router.js'
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./Products.js";
@@ -31,10 +31,11 @@ app.use('/',viewRouter);
 app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
 
-// app.use('/api/users',userRouter);
+app.use('/api/users',userRouter);
 
 const httpServer = app.listen(8080)
-mongoose.connect('mongodb+srv://emidovichi:<password>@codertest.aa1w9yi.mongodb.net/?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://inged:Bujinkan.bud0@ecommerce.qbxfygm.mongodb.net/?retryWrites=true&w=majority')
+
 const socketServer = new Server(httpServer);
 socketServer.on('connection',socket=>{
     console.log("cliente conectado");

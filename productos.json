@@ -1,1 +1,28 @@
-[{"prodId":1,"title":"BC-547","description":"transistor","code":"BC547","price":"20","status":true,"stock":70,"category":"20","thumbnails":[""]},{"prodId":2,"title":"TIP42C","description":"Transistor","code":"TIP-41C","price":"22","status":true,"stock":70,"category":"Transistor npn","thumbnails":[""]}]
+[
+    {
+        "prodId": 1,
+        "title": "BC-547",
+        "description": "transistor",
+        "code": "BC547",
+        "price": "20",
+        "status": true,
+        "stock": 70,
+        "category": "20",
+        "thumbnails": [
+            ""
+        ]
+    },
+    {
+        "prodId": 2,
+        "title": "TIP42C",
+        "description": "Transistor",
+        "code": "TIP-41C",
+        "price": "22",
+        "status": true,
+        "stock": 70,
+        "category": "Transistor npn",
+        "thumbnails": [
+            ""
+        ]
+    }
+]
