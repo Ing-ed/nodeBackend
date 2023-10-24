@@ -4,9 +4,11 @@ import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
 import viewRouter from './routes/views.router.js'
 import userRouter from './routes/user.router.js'
+import messageRouter from './routes/messages.router.js'
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
-import { ProductManager } from "./Products.js";
+import { ProductManager } from "./views/Dao/Products.js";
+// import { messageModel } from "./models/messages.models.js";
 import mongoose from 'mongoose'
 
 const manager = new ProductManager("productos.json")
@@ -30,8 +32,9 @@ app.use(express.urlencoded( {extended : true}))
 app.use('/',viewRouter);
 app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
-
 app.use('/api/users',userRouter);
+app.use('/messages',messageRouter);
+
 
 const httpServer = app.listen(8080)
 mongoose.connect('mongodb+srv://inged:Bujinkan.bud0@ecommerce.qbxfygm.mongodb.net/?retryWrites=true&w=majority')
@@ -78,4 +81,15 @@ socketServer.on('connection',socket=>{
             socketServer.emit("updateProd",e)
         })
     })
+    // socket.on("chat",async data =>{
+    //     console.log(data,"chat")
+    //     try{
+    //         let result = await messageModel.create(data);
+    //         console.log("intento crear mensaje")
+    //         console.log(result)
+    //         socket.emit("chat",result)
+    //     } catch (error){
+    //         socket.emit("chat",error);
+    //     }
+    // })
 })

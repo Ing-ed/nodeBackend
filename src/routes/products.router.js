@@ -1,4 +1,4 @@
-import { ProductManager } from "../Products.js";
+import { ProductManager } from "../views/Dao/Products.js";
 import { Router } from "express";
 import { Validar } from "../../resources/Validacion.js";
 import { productModel } from "../models/products.models.js";

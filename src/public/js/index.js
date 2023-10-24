@@ -56,31 +56,4 @@ socket.on("getProducts",data =>{
         productos.innerHTML += `<hr>`
     })
     console.log(products,"productos")
-    // data.map((item) =>{
-    //     console.log("item",item)
-    //     let prod = document.createElement('div')
-    //     prod.className = "prod"
-    //     for (let value in item){
-    //         let p = document.createElement('p');
-    //         // console.log(value)
-    //         p.innerHTML = value;
-    //         // console.log("parrafo",p)
-    //         prod.appendChild|(p)
-    //     }
-    //     page.appendChild(prod)
-
-    // })
 })
-
-// socket.on("updateProd",data =>{
-//     console.log("data",data,typeof data)
-//     let catalogo =[].slice.call(document.getElementsByClassName("prod"));
-//     catalogo.map((item) =>{
-//         console.log(item)
-//     })
-//     console.log(catalogo)
-// })
-
-// document.getElementById("modificar").addEventListener("click",()={
-//     // const prodMod = {}
-// })
