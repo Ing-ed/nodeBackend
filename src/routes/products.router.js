@@ -7,28 +7,39 @@ const router = Router();
 
 const manager = new ProductManager("productos.json");
 //PAGINACION
-async function Paginar(){
-    let productos = await productModel.paginate({category:"transistores"},{limit:4,page:1})
-    console.log(productos)
-}
-Paginar();
+// async function Paginar(){
+//     let productos = await productModel.paginate({category:"transistores"},{limit:4,page:1})
+//     console.log(productos)
+// }
+// Paginar();
 
 // get
-router.get("/:limit?/:page?/:query?/:sort?",async (req,res) =>{
-    let {limit, page, query, sort} = req.params;
+router.get("/",async (req,res) =>{
+    let {limit, page, sort, query} = req.query;
+    // let {query} = req.query;
     
-    console.log(limit, page, query, sort)
+    console.log(query, sort)
+
     try{
-        let prodFilt = await productModel.aggregate([
+        let search = query !== undefined ?{category:query} :{} 
+        let orden = sort !== undefined ? {price:sort} : {}
+        let pagina = page !== undefined ? page : 1
+        let products = await productModel.paginate(search,{limit:+limit>0? +limit : 10,page:page>0?page:1,sort:orden});
+        let result =
         {
-            $limit:+limit > 0? +limit : 10
-        },
-        {
-            $sort: {title: sort === "asc" ?  1 : -1} 
+            status:"success",
+            payload:products.docs,
+            totalPages:products.totalPages,
+            prevPage:products.hasPrevPage ? products.prevPages : null,
+            nextPage:products.hasNextPage ? products.nextPage : null,
+            page:products.page,
+            hasPrevPage:products.hasPrevPage,            
+            hasNextPage:products.hasNextPage,
+            prevLink:products.hasPrevPage ? `http://localhost:8080/api/products/${limit}/${products.prevPage}/${query}/${sort}`:null,
+            nextLink:products.hasNextPage ? `http://localhost:8080/api/products/${limit}/${products.nextPage}/${query}/${sort}`:null,
+
         }
-        ])
-        let products = await productModel.find();
-        res.send({result:"Success",payload:prodFilt})
+        res.send(result)
     } catch (error){
         res.send({result:"error",error:error})
     }
@@ -53,6 +64,7 @@ router.get("/:limit?/:page?/:query?/:sort?",async (req,res) =>{
 router.get("/:pid", async (req,res) => {
     const {pid} = req.params;
     try{
+
         let product = await productModel.findOne({code:pid})
         if(product === null){res.send({result:"error",error:"Producto no encontrado"})}
         // console.log(product)

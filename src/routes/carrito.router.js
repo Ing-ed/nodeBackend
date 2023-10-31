@@ -6,6 +6,32 @@ const router = Router();
 
 const manager = new ProductManager("productos.json","carrito.json");
 
+router.get("/:cid?",async (req,res) =>{
+    const {cid} = req.params;
+    try{
+        let carts = await cartModel.find();
+        if(cid === undefined){
+            res.send({result:"success",payload:carts})
+            return
+        }
+        console.log(carts, "Carritos")
+        let result = await cartModel.findOne(
+            {cartId:+cid}
+        ).populate('products')
+        res.send({result:"success",payload:result})
+        
+        // console.log(carts)
+    } catch (error){
+        console.log("error", error)
+    }
+    // manager.getCartById({cartId:+cid})
+    // .then((r) => {
+    //     res.send({message:r})
+    // }) .catch((e) => {
+    //     res.send({message:e})
+    // })
+})
+
 router.post("/",async (req,res) =>{
     let {prodId,quantity} = req.body
     console.log(!prodId,!quantity)
@@ -34,6 +60,22 @@ router.post("/",async (req,res) =>{
     // }) .catch((e) =>{
     //     res.send({error:e})
     // })
+})
+
+router.put("/:cid", async (req,res) =>{
+    let {cid} = req.params
+    let {pid, cant} = req.body
+    console.log("aca")
+    console.log(req.body)
+    try{
+        let result = await cartModel.updateOne(
+            {cartId:+cid},
+            {$push:{products:req.body}}
+        )
+        res.send({result:"Success",payload:result})
+    } catch (error) {
+        res.send({result:"error",error:error.message});
+    }
 })
 
 router.put("/:cid/product/:pid",async (req,res)=>{
@@ -67,27 +109,36 @@ router.put("/:cid/product/:pid",async (req,res)=>{
     // })
 })
 
-router.get("/:cid",async (req,res) =>{
-    const {cid} = req.params;
+
+router.delete("/:cid",async (req,res) =>{
+    let {cid} = req.params;
     try{
-        let carts = await cartModel.find();
-        console.log(carts, "Carritos")
-        let index = carts.findIndex((item) => item.cartId === +cid)
-        if(index <0 ){
-            res.send({result:"error",cause:"item no encontrado"});
-        } else{
-            res.send({result:"sucess",payload:carts[index]})
-        }
-        // console.log(carts)
-    } catch (error){
-        console.log("error", error)
+        let result = await cartModel.updateOne(
+            {cartId:+cid},
+            {$set: {products:[]}}
+        )
+        res.send({result:"Success",payload:result})
+    } catch (error) {
+        res.send({result:"Error",error:error.message})
+
     }
-    // manager.getCartById({cartId:+cid})
-    // .then((r) => {
-    //     res.send({message:r})
-    // }) .catch((e) => {
-    //     res.send({message:e})
-    // })
+})
+
+router.delete("/:cid/products/:pid", async (req,res) =>{
+    let {cid, pid} = req.params;
+    console.log(cid,pid)
+    try{
+        
+        let result = await cartModel.updateOne(
+            {cartId:cid},
+            {$pull:{products : {prodId: +pid}}}                
+            )
+        res.send({result:"succes",payload:result})
+    } catch(error){
+        console.log(error)
+
+    }
+    // let result = await cartModel.deleteOne({})
 })
 
 export default router;
