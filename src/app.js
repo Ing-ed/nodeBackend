@@ -39,6 +39,7 @@ app.use('/messages',messageRouter);
 const httpServer = app.listen(8080)
 mongoose.connect('mongodb+srv://inged:Bujinkan.bud0@ecommerce.qbxfygm.mongodb.net/?retryWrites=true&w=majority')
 
+
 const socketServer = new Server(httpServer);
 socketServer.on('connection',socket=>{
     console.log("cliente conectado");

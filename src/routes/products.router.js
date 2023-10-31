@@ -2,14 +2,33 @@ import { ProductManager } from "../views/Dao/Products.js";
 import { Router } from "express";
 import { Validar } from "../../resources/Validacion.js";
 import { productModel } from "../models/products.models.js";
+import mongoosePaginate from 'mongoose-paginate-v2'
 const router = Router();
 
 const manager = new ProductManager("productos.json");
+//PAGINACION
+async function Paginar(){
+    let productos = await productModel.paginate({category:"transistores"},{limit:4,page:1})
+    console.log(productos)
+}
+Paginar();
+
 // get
-router.get("/",async (req,res) =>{
+router.get("/:limit?/:page?/:query?/:sort?",async (req,res) =>{
+    let {limit, page, query, sort} = req.params;
+    
+    console.log(limit, page, query, sort)
     try{
+        let prodFilt = await productModel.aggregate([
+        {
+            $limit:+limit > 0? +limit : 10
+        },
+        {
+            $sort: {title: sort === "asc" ?  1 : -1} 
+        }
+        ])
         let products = await productModel.find();
-        res.send({result:"Success",payload:products})
+        res.send({result:"Success",payload:prodFilt})
     } catch (error){
         res.send({result:"error",error:error})
     }
