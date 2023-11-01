@@ -82,15 +82,4 @@ socketServer.on('connection',socket=>{
             socketServer.emit("updateProd",e)
         })
     })
-    // socket.on("chat",async data =>{
-    //     console.log(data,"chat")
-    //     try{
-    //         let result = await messageModel.create(data);
-    //         console.log("intento crear mensaje")
-    //         console.log(result)
-    //         socket.emit("chat",result)
-    //     } catch (error){
-    //         socket.emit("chat",error);
-    //     }
-    // })
 })

@@ -1,0 +1,16 @@
+<div id="index">
+    <h1>Todos los productos</h1>
+    <p>{{result}}</p>
+    <div id="productos">
+        {{#each result}}
+            <div class="cart">
+                {{#each prod}}
+                    <div class = "info">
+                        <p>{{this.prodId}}pppp</p>
+                    </div>
+                {{/each}}
+            </div>
+        {{/each}}
+    </div>
+    <script src="/js/addProds.js"></script>  
+</div>

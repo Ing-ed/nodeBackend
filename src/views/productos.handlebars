@@ -1,0 +1,20 @@
+<div id="index">
+    <h1>Todos los productos</h1>
+    <div id="productos">
+        {{#each result}}
+            <div class="prod">
+                <div class = "info">
+                    <p>{{this.title}}</p>
+                    <p>{{this.description}}</p>
+                    <p>{{this.category}}</p>
+                    <p>{{this.price}}</p>
+                </div>
+                <div class = "agregar">
+                    <input type="number" class="cant" value="1">
+                    <button class="add" name={{this._id}}>Add</button>
+                </div>
+            </div>
+        {{/each}}
+    </div>
+    <script src="/js/addProds.js"></script>  
+</div>
