@@ -1,16 +1,18 @@
 <div id="index">
     <h1>Todos los productos</h1>
-    <p>{{result}}</p>
-    <div id="productos">
+    <p>cartId {{result.cartId}}</p>
+    {{!-- <p>{{result}}</p> --}}
+    <div id = "productos">
         {{#each result}}
-            <div class="cart">
-                {{#each prod}}
-                    <div class = "info">
-                        <p>{{this.prodId}}pppp</p>
-                    </div>
-                {{/each}}
-            </div>
+            {{#each this.products}}
+                <div class="prod">
+                    <p>title {{this.product.title}}</p>
+                    <p>description {{this.product.description}}</p>
+                    <p>category {{this.product.category}}</p>
+                    <p>price {{this.product.price}}</p>
+                    <p>quantity {{this.quantity}}</p>
+                </div>
+            {{/each}}
         {{/each}}
-    </div>
     <script src="/js/addProds.js"></script>  
 </div>

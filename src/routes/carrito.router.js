@@ -38,17 +38,16 @@ router.post("/",async (req,res) =>{
     if((prodId === undefined) || (quantity === undefined)){res.send({result:"error",error:"Faltan datos"}) 
     return}
     try{
-        let carts = await cartModel.find();
-        let cartindex = carts.length > 0? carts.length++ : 0;
-        console.log(cartindex)
-        carts = await cartModel.create({
-            cartId:cartindex,
-            products:[req.body]
+        let cartId = await cartModel.count()
+        console.log(cartId)
+        let result = await cartModel.create({
+            cartId: cartId +1,
+            products:[{product:prodId.toString(),quantity:quantity}]
         })
-        res.send({result:"success",payload:carts});
-        // let cart = await cartModel.create({
-
-        // })
+        console.log(result._id.toString())
+        let resp = await cartModel.findOne({_id:result._id}).populate({path:'products.product', select:'title description price'})
+        console.log(resp)
+        res.send({result:"Success",payload:result})
     } catch (error){
         res.send({result:"error",error:error});
         console.log("Error", error)
@@ -64,16 +63,17 @@ router.post("/",async (req,res) =>{
 
 router.put("/:cid", async (req,res) =>{
     let {cid} = req.params
-    let {pid, cant} = req.body
+    let {prodId,quantity} = req.body
     console.log("aca")
     console.log(req.body)
     try{
         let result = await cartModel.updateOne(
-            {cartId:+cid},
-            {$push:{products:req.body}}
+            {_id:cid},
+            {$push:{products:{product:prodId.toString(),quantity:quantity}}}
         )
         res.send({result:"Success",payload:result})
     } catch (error) {
+        console.log("error",error.message)
         res.send({result:"error",error:error.message});
     }
 })

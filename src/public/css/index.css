@@ -6,6 +6,8 @@
     width: 100vw;
     height: fit-content;
     background-color: #BBBBBB;
+    display: flex;
+    flex-direction: column;
     text-align: center;
 }
 #productos{

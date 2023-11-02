@@ -26,9 +26,14 @@ router.get("/chat",(req,res) =>{
 })
 router.get("/productos",async (req,res) =>{
     try{
+        let cartId = await cartModel.count()
+        let cart = await cartModel.create({
+            cartId:cartId +1
+        })
+        let idCart = cart._id.toString()
         let result = await productModel.find().lean()
-        console.log(result)
-        res.render('productos',{result})
+        console.log(cart)
+        res.render('productos',{result,idCart})
     } catch (error){
         res.send({result:"error",error:error.message})
     }
@@ -37,9 +42,11 @@ router.get("/productos",async (req,res) =>{
 router.get("/cart/:cid", async (req,res) =>{
     let {cid} = req.params;
     try{
-        let result = await cartModel.find().lean()
-        console.log("result",result)
-        res.render('cart',{result})
+        let result = await cartModel.findOne({_id:cid}).populate('products.product').lean()
+        result = [result]
+        console.log("result",JSON.stringify(result,null,'\t'))
+        // console.log(result[0].products)
+        res.render('cart',{result : result})
     } catch (error) {
         res.send({result:"error",error:error.message})
     }
