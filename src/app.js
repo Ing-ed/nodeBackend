@@ -1,4 +1,5 @@
 import express from "express";
+import session from "express-session";
 import handlebars from 'express-handlebars'
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
@@ -13,12 +14,12 @@ import { ProductManager } from "./views/Dao/Products.js";
 // import { messageModel } from "./models/messages.models.js";
 import mongoose from 'mongoose'
 
-const manager = new ProductManager("productos.json")
-let prods = []
-manager.getProducts()
-.then((r) =>{
-    prods = r
-})
+// const manager = new ProductManager("productos.json")
+// let prods = []
+// manager.getProducts()
+// .then((r) =>{
+//     prods = r
+// })
 const app = express()
 //inicializar el motor de plantillas
 app.engine('handlebars', handlebars.engine())
@@ -27,17 +28,24 @@ app.set('views', __dirname+'/views');
 //indicar que motor se quiere utilizar
 app.set('view engine','handlebars');
 
+//indicar el directorio publico
 app.use(express.static(__dirname+'/public'))
+//indicar el uso de json y urlencode
 app.use(express.json())
 app.use(express.urlencoded( {extended : true}))
-app.use(cookieParser())
+//clave para las cookies firmadas
+app.use(cookieParser("signada"))
+// uso de sesiones
+app.use(session({secret : "mobydick", cookie:{maxAge:60000}}))
 
+
+//indicar las rugas
 app.use('/',viewRouter);
 app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users',userRouter);
 app.use('/messages',messageRouter);
-app.use('/cookie',cookieRouter)
+app.use('/cookies',cookieRouter)
 
 
 const httpServer = app.listen(8080)
