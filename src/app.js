@@ -4,7 +4,9 @@ import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
 import viewRouter from './routes/views.router.js'
 import userRouter from './routes/user.router.js'
+import cookieRouter from './routes/cookie.router.js'
 import messageRouter from './routes/messages.router.js'
+import cookieParser from "cookie-parser";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./views/Dao/Products.js";
@@ -28,12 +30,14 @@ app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/public'))
 app.use(express.json())
 app.use(express.urlencoded( {extended : true}))
+app.use(cookieParser())
 
 app.use('/',viewRouter);
 app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users',userRouter);
 app.use('/messages',messageRouter);
+app.use('/cookie',cookieRouter)
 
 
 const httpServer = app.listen(8080)
