@@ -5,9 +5,10 @@ import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
 import viewRouter from './routes/views.router.js'
 import userRouter from './routes/user.router.js'
-import cookieRouter from './routes/cookie.router.js'
+import sessionRouter from './routes/sessions.router.js'
 import messageRouter from './routes/messages.router.js'
 import cookieParser from "cookie-parser";
+import MongoStore from 'connect-mongo'
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 import { ProductManager } from "./views/Dao/Products.js";
@@ -36,7 +37,15 @@ app.use(express.urlencoded( {extended : true}))
 //clave para las cookies firmadas
 app.use(cookieParser("signada"))
 // uso de sesiones
-app.use(session({secret : "mobydick", cookie:{maxAge:60000}}))
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl: 'mongodb+srv://inged:Bujinkan.bud0@ecommerce.qbxfygm.mongodb.net/?retryWrites=true&w=majority',
+        mongoOptions:{useNewUrlParser:true,useUnifiedTopology:true},
+        ttl:15
+    }),
+    secret:"mobyDick",
+    cookie:{maxAge: 60000}
+}))
 
 
 //indicar las rugas
@@ -45,7 +54,7 @@ app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users',userRouter);
 app.use('/messages',messageRouter);
-app.use('/cookies',cookieRouter)
+app.use('/sessions',sessionRouter)
 
 
 const httpServer = app.listen(8080)

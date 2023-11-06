@@ -3,11 +3,19 @@ import mongoosePaginate from 'mongoose-paginate-v2'
 
 const userCollection = 'users'; //nombre de la coleccion en la base de datos
 const userSchema = new mongoose.Schema({
-    first_name:String,
-    last_name:String,
+    user:{
+        type:String,
+        required:true,
+        unique:true,
+    },
     email:{
         type:String,
+        required:true,
         unique:true
+    },
+    pass:{
+        type:String,
+        required:true
     }
 })
 

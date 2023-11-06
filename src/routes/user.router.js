@@ -11,4 +11,14 @@ router.get('/', async (req,res) =>{
         console.log("No se pudo encntrar ",error);
     }
 })
+router.post("/signup", async (req,res) =>{
+    let {user, email, pass} = req.body;
+    
+    try{
+        let result = await userModel.create({user:user,email:email,pass:pass})
+        res.send({result:"Success",payload:result})
+    } catch (error){
+        res.send({result:"Error",error:error.message})
+    }
+})
 export default router

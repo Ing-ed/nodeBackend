@@ -24,7 +24,9 @@ router.get("/realtimeproducts",(req,res) =>{
 router.get("/chat",(req,res) =>{
     res.render('chat',{prods})
 })
-router.get("/productos",async (req,res) =>{
+router.get("/productos/:uid",async (req,res) =>{
+    //uid -> user ID
+    let { uid } = req.params;
     try{
         let cartId = await cartModel.count()
         let cart = await cartModel.create({
@@ -54,6 +56,10 @@ router.get("/cart/:cid", async (req,res) =>{
 
 router.get("/login",(req,res) => {
     res.render('login')
+})
+
+router.get("/signup",(req,res) =>{
+    res.render('signup')
 })
 // router.put("/updateProd")
 
