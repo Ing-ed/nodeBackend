@@ -16,6 +16,9 @@ const userSchema = new mongoose.Schema({
     pass:{
         type:String,
         required:true
+    },
+    rol:{
+        type:String,
     }
 })
 

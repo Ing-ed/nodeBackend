@@ -31,7 +31,6 @@ router.get("/productos/:uid",async (req,res) =>{
     try{
         let cart = await cartModel.findOne({user:uid})
         if(!cart){
-            console.log(cart, "acaaaa")
             let cartId = await cartModel.count()
             cart = await cartModel.create({
                 cartId:cartId +1,
@@ -39,11 +38,11 @@ router.get("/productos/:uid",async (req,res) =>{
             })
         }
         let username = await userModel.findOne({_id:uid}) //se supone que el usuario ya existe sino no se puede mostrar esta pagina
-        let {user} = username
+        let {user, rol} = username
         let idCart = cart._id.toString()
         let result = await productModel.find().lean()
         console.log(cart)
-        res.render('productos',{result,idCart,user})
+        res.render('productos',{result,idCart,user,rol})
     } catch (error){
         res.send({result:"error",error:error.message})
     }

@@ -16,9 +16,9 @@ router.get("/signed",(req,res) =>{
     res.cookie("cookie2","firmada",{signed:true,maxAge:20000}).send("2da cookie enviada")
 })
 router.post("/login",async (req,res) =>{
-    const {user, pass} = req.body;
+    const {email, pass} = req.body;
     try{
-        let exist = await userModel.findOne({user:user})
+        let exist = await userModel.findOne({email:email})
         if(!exist){
             return res.redirect("/signup")
         }
@@ -34,6 +34,15 @@ router.post("/login",async (req,res) =>{
     // res.send("Session iniciada");
 })
 
+router.get("/logout", async (req,res) =>{
+    try{
+        let result = req.session.destroy()
+        res.redirect('/login')
+    } catch (error){
+        res.send({error:error.message})
+    }
+    
+})
 
 
 export default router;
