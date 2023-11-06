@@ -25,7 +25,7 @@ router.post("/login",async (req,res) =>{
         if(exist.pass !== pass){
             return res.send("password incorrecto")
         }
-        res.redirect("/productos")
+        res.redirect(`/productos/${exist._id}`)
     }catch (error){
         res.send({result:"Error",error:error.message})
     }

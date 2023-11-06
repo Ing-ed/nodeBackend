@@ -2,6 +2,7 @@ import { Router } from "express";
 import { foods } from "../../resources/foods.js";
 import { productModel } from "../models/products.models.js";
 import { cartModel } from "../models/carts.model.js";
+import { userModel } from "../models/user.model.js";
 import { ProductManager } from "../views/Dao/Products.js";
 
 const router = Router();
@@ -28,14 +29,21 @@ router.get("/productos/:uid",async (req,res) =>{
     //uid -> user ID
     let { uid } = req.params;
     try{
-        let cartId = await cartModel.count()
-        let cart = await cartModel.create({
-            cartId:cartId +1
-        })
+        let cart = await cartModel.findOne({user:uid})
+        if(!cart){
+            console.log(cart, "acaaaa")
+            let cartId = await cartModel.count()
+            cart = await cartModel.create({
+                cartId:cartId +1,
+                user:uid
+            })
+        }
+        let username = await userModel.findOne({_id:uid}) //se supone que el usuario ya existe sino no se puede mostrar esta pagina
+        let {user} = username
         let idCart = cart._id.toString()
         let result = await productModel.find().lean()
         console.log(cart)
-        res.render('productos',{result,idCart})
+        res.render('productos',{result,idCart,user})
     } catch (error){
         res.send({result:"error",error:error.message})
     }
