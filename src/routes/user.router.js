@@ -8,7 +8,7 @@ router.get('/', async (req,res) =>{
         let users = await userModel.find();
         res.send({result:"success",payload:users})
     } catch (error) {
-        console.log("No se pudo encntrar ",error);
+        //console.log("No se pudo encntrar ",error);
     }
 })
 router.post("/signup", async (req,res) =>{

@@ -3,15 +3,15 @@ import { foods } from "../../resources/foods.js";
 import { productModel } from "../models/products.models.js";
 import { cartModel } from "../models/carts.model.js";
 import { userModel } from "../models/user.model.js";
-import { ProductManager } from "../views/Dao/Products.js";
+// import { ProductManager } from "../views/Dao/Products.js";
 
 const router = Router();
-const manager = new ProductManager("productos.json");
+// const manager = new ProductManager("productos.json");
 let prods = []
-manager.getProducts()
-.then((r) =>{
-    prods = r
-})
+// manager.getProducts()
+// .then((r) =>{
+//     prods = r
+// })
 
 
 
@@ -41,7 +41,7 @@ router.get("/productos/:uid",async (req,res) =>{
         let {user, rol} = username
         let idCart = cart._id.toString()
         let result = await productModel.find().lean()
-        console.log(cart)
+        //console.log(cart)
         res.render('productos',{result,idCart,user,rol})
     } catch (error){
         res.send({result:"error",error:error.message})
@@ -53,9 +53,9 @@ router.get("/cart/:cid", async (req,res) =>{
     try{
         let result = await cartModel.findOne({_id:cid}).populate('products.product').lean()
         result = [result]
-        console.log("result",JSON.stringify(result,null,'\t'))
-        // console.log(result[0].products)
-        res.render('cart',{result : result})
+        //console.log("result",JSON.stringify(result,null,'\t'))
+        // //console.log(result[0].products)
+        res.render('cart',{result,cid})
     } catch (error) {
         res.send({result:"error",error:error.message})
     }

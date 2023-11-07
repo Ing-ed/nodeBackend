@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser";
 import MongoStore from 'connect-mongo'
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
-import { ProductManager } from "./views/Dao/Products.js";
+// import { ProductManager } from "./views/Dao/Products.js";
 // import { messageModel } from "./models/messages.models.js";
 import mongoose from 'mongoose'
 
@@ -63,13 +63,13 @@ mongoose.connect('mongodb+srv://inged:Bujinkan.bud0@ecommerce.qbxfygm.mongodb.ne
 
 const socketServer = new Server(httpServer);
 socketServer.on('connection',socket=>{
-    console.log("cliente conectado");
+    //console.log("cliente conectado");
     socket.on("connection",(data) =>{
-        console.log(data)
+        //console.log(data)
     })
 
     socket.on("getProducts" ,data =>{
-        console.log("IS")
+        //console.log("IS")
         manager.getProducts()
         .then((r) => {
             socketServer.emit("getProducts",r)
@@ -79,22 +79,22 @@ socketServer.on('connection',socket=>{
     socket.on("addProduct",data =>{
         manager.addProduct(data)
         .then((r) => {
-            console.log(r,"r")
+            //console.log(r,"r")
             manager.getProducts()
             .then((r) => {
-                console.log("R -> ",r)
+                //console.log("R -> ",r)
                 socketServer.emit("getProducts",r)
             }) .catch((e) => socketServer.emit(e))
         }).catch((e)=>{
             socketServer.emit("updateProd",e)
         })
-        console.log("recibi",data)
+        //console.log("recibi",data)
     })
 
     socket.on("deleteProduct",data=>{
         manager.deleteProduct(data)
         .then((r) => {
-            console.log(r,"r")
+            //console.log(r,"r")
             manager.getProducts()
             .then((r) =>{
                 socketServer.emit("getProducts",r)

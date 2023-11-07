@@ -6,12 +6,12 @@ export function Validar(datos,metodo){
     const camposaddProductToCart = ["prodId","quantity"]
     const camposupdateProductFromCart = ["cartId","prodId","quantity"]
     let res = true
-    console.log(metodo,"Metodo")
+    //console.log(metodo,"Metodo")
     switch(metodo){
         case "addProduct":
             camposAddProduct.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }
@@ -20,7 +20,7 @@ export function Validar(datos,metodo){
         case "UpdateProduct":
             camposUpdateProduct.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }
@@ -29,7 +29,7 @@ export function Validar(datos,metodo){
         case "GetProductById":
             camposGetProductById.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }
@@ -38,7 +38,7 @@ export function Validar(datos,metodo){
         case "DeleteProduct":
             camposDeleteProduct.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }
@@ -47,7 +47,7 @@ export function Validar(datos,metodo){
         case "addProductToCart":
             camposaddProductToCart.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }
@@ -56,7 +56,7 @@ export function Validar(datos,metodo){
         case "updateProductFromCart":
             camposupdateProductFromCart.map((item) => {
                 if(datos[item] === undefined){
-                    console.log("aca",item)
+                    //console.log("aca",item)
                     res = false;
                     
                 }

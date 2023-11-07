@@ -8,15 +8,15 @@ const socket = io();
 socket.emit("connection","Hola, esto es un socket")
 socket.emit("connection",22)
 
-console.log("emitBegin")
+//console.log("emitBegin")
 socket.emit("getProducts");
-console.log("emitEND")
+//console.log("emitEND")
 
 const form = document.getElementById("form")
 form.onsubmit = (e) =>{
     e.preventDefault()
     const inputs = form.getElementsByTagName("input")
-    console.log(inputs[0].name,"ACA")
+    //console.log(inputs[0].name,"ACA")
     const prodAdd = {
         title : inputs[0].value,
         description : inputs[1].value,
@@ -28,7 +28,7 @@ form.onsubmit = (e) =>{
         thumbnails : [""]
     }
     socket.emit("addProduct",prodAdd)
-    console.log(prodAdd)
+    //console.log(prodAdd)
 }
 
 
@@ -40,20 +40,20 @@ form2.onsubmit = (e) =>{
         prodId: inputs[0].value
     }
     socket.emit("deleteProduct",prodDelete)
-    console.log("eliminar",prodDelete)
+    //console.log("eliminar",prodDelete)
 }
 
 socket.on("getProducts",data =>{
-    // console.log("dataGetProds",data)
+    // //console.log("dataGetProds",data)
     products = data
     productos.innerHTML = ""
     products.map((item,index) => {
         productos.innerHTML += `<h3>Producto ${index}`
         for(let i in item){
-            console.log(i,item[i])
+            //console.log(i,item[i])
             productos.innerHTML += `${i} : ${item[i]}<br>`
         }
         productos.innerHTML += `<hr>`
     })
-    console.log(products,"productos")
+    //console.log(products,"productos")
 })

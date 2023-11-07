@@ -1,15 +1,15 @@
-import { ProductManager } from "../views/Dao/Products.js";
+// import { ProductManager } from "../views/Dao/Products.js";
 import { Router } from "express";
 import { Validar } from "../../resources/Validacion.js";
 import { productModel } from "../models/products.models.js";
 import mongoosePaginate from 'mongoose-paginate-v2'
 const router = Router();
 
-const manager = new ProductManager("productos.json");
+// const manager = new ProductManager("productos.json");
 //PAGINACION
 // async function Paginar(){
 //     let productos = await productModel.paginate({category:"transistores"},{limit:4,page:1})
-//     console.log(productos)
+//     //console.log(productos)
 // }
 // Paginar();
 
@@ -18,7 +18,7 @@ router.get("/",async (req,res) =>{
     let {limit, page, sort, query} = req.query;
     // let {query} = req.query;
     
-    console.log(query, sort)
+    //console.log(query, sort)
 
     try{
         let search = query !== undefined ?{category:query} :{} 
@@ -44,12 +44,12 @@ router.get("/",async (req,res) =>{
         res.send({result:"error",error:error})
     }
 
-    // //console.log("aca")
+    // ////console.log("aca")
     // const limit = req.query.limit;
     // let arr = []
     // manager.getProducts().then((r) =>{
     //     if(limit){
-    //         //console.log("limit", limit);
+    //         ////console.log("limit", limit);
     //         res.json(r.slice(0,+limit))
     //     } else{
     //         res.send(r)
@@ -67,7 +67,7 @@ router.get("/:pid", async (req,res) => {
 
         let product = await productModel.findOne({code:pid})
         if(product === null){res.send({result:"error",error:"Producto no encontrado"})}
-        // console.log(product)
+        // //console.log(product)
         res.send({result:"success",payload:product})
     } catch (error) {
         res.send({result:"error",error:error})
@@ -78,7 +78,7 @@ router.get("/:pid", async (req,res) => {
     //     .catch((e) => {
     //         res.send(e)
     //     })
-    // //console.log(req)
+    // ////console.log(req)
 })
 
 //add
@@ -93,7 +93,7 @@ router.post("/",async (req,res) =>{
     // if(!Validar(req.body,"addProduct")){
     //     res.send({message:"Faltan campos"})
     // } else{
-    //     console.log("paso validacion")
+    //     //console.log("paso validacion")
     //     manager.addProduct(req.body)
     //     .then((r) =>{
     //         res.send({message:r})
@@ -107,7 +107,7 @@ router.post("/",async (req,res) =>{
 router.put("/:pid", async (req,res) =>{
     const {pid} = req.params
     const {field, value} = req.body
-    console.log(pid)
+    //console.log(pid)
     try{
         let products = await productModel.find();
         let index = products.findIndex((p) => p.code === pid);

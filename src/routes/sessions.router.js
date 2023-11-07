@@ -3,13 +3,13 @@ import {userModel} from '../models/user.model.js'
 
 const router = Router();
 router.get("/",(req,res) =>{
-    console.log("cookie")
+    //console.log("cookie")
     res.cookie("cookie1","prueba").send("Probando cookie")
 })
 router.get("/leer",(req,res) =>{
     const {cookie1} = req.cookies
     const {cookie2} = req.signedCookies
-    console.log("Leyendo",req.cookies, req.signedCookies)
+    //console.log("Leyendo",req.cookies, req.signedCookies)
     res.json({cookie1:cookie1,cookie2:cookie2})
 })
 router.get("/signed",(req,res) =>{

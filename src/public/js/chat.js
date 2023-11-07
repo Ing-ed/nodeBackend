@@ -5,10 +5,10 @@ const socket = io();
 const form = document.getElementById("sender");
 form.onsubmit = (e) =>{
     e.preventDefault();
-    console.log("Aca")
+    //console.log("Aca")
     let user = document.getElementById("user")
     let message = document.getElementById("message");
-    console.log(message.value)
+    //console.log(message.value)
     fetch('http://localhost:8080/messages',{
         method:'POST',
         headers:{
@@ -23,7 +23,7 @@ form.onsubmit = (e) =>{
         return r.json()
     })
     .then((r) => {
-        console.log(r,"R")
+        //console.log(r,"R")
         if (r.payload === "OK"){
             window.alert("Mensaje guardado con exito")
             message.value = ""
@@ -35,5 +35,5 @@ form.onsubmit = (e) =>{
 }
 socket.on("chat", data =>{
     let chat = document.getElementById("chat")
-    console.log("chat",data)
+    //console.log("chat",data)
 })
