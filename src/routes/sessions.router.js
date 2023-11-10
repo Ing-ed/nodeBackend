@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {userModel} from '../models/user.model.js'
+import { CompareHash } from "../utils.js";
 
 const router = Router();
 router.get("/",(req,res) =>{
@@ -17,12 +18,15 @@ router.get("/signed",(req,res) =>{
 })
 router.post("/login",async (req,res) =>{
     const {email, pass} = req.body;
+    console.log(email,pass);
     try{
         let exist = await userModel.findOne({email:email})
         if(!exist){
             return res.redirect("/signup")
         }
-        if(exist.pass !== pass){
+        console.log(CompareHash(pass,exist))
+        if(!CompareHash(pass,exist)){
+        // if(exist.pass !== pass){
             return res.send("password incorrecto")
         }
         res.redirect(`/productos/${exist._id}`)

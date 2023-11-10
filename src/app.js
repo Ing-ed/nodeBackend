@@ -9,6 +9,8 @@ import sessionRouter from './routes/sessions.router.js'
 import messageRouter from './routes/messages.router.js'
 import cookieParser from "cookie-parser";
 import MongoStore from 'connect-mongo'
+import passport from "passport";
+import InitializePassport from "./config/passport.config.js";
 import __dirname from "./utils.js";
 import { Server } from "socket.io";
 // import { ProductManager } from "./views/Dao/Products.js";
@@ -46,6 +48,9 @@ app.use(session({
     secret:"mobyDick",
     cookie:{maxAge: 60000}
 }))
+InitializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 
 //indicar las rugas
