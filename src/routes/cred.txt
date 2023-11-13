@@ -1,0 +1,5 @@
+{
+    App ID: 458752,
+    Client ID: Iv1.049bf7e511dc969b,
+    Client Secret: 459395e41e0c3035adf41777aa12975546a9c002
+}

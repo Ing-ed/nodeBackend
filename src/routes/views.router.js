@@ -64,7 +64,9 @@ router.get("/cart/:cid", async (req,res) =>{
 router.get("/login/:message?",(req,res) => {
     const {message} = req.params
     if(message)
-    res.render('login',{Message:"Algo salio mal"})
+        res.render('login',{Message:"Algo salio mal"})
+    else
+        res.render('login',{Message:"Algo salio mal"})
 })
 
 router.get("/signup",(req,res) =>{
