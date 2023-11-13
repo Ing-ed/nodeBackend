@@ -14,7 +14,7 @@ passport.use("register",new localStrategy(
                 return done(null,false)
             } else {
                 let result = await userModel.create({user:req.body.user,email:username,pass:CreateHash(password)})
-                done(null,result)
+                return done(null,result)
             }
             console.log(user);
             // done(null,"user")
@@ -30,27 +30,26 @@ passport.use("login",new localStrategy(
     async function(req,username,password,done){
         const {email, pass} = req.body;
         if(!email || !pass){
-            return done(null, false)
+            return done(null,false)
         }
         try{
             let exist = await userModel.findOne({email:email})
             if(!exist){
-                done()
+                return done(null,false,"usuario no encontrado")
             }
-            console.log(CompareHash(pass,exist))
             if(!CompareHash(pass,exist)){
-            // if(exist.pass !== pass){
-                return res.send("password incorrecto")
+                return done(null,false,"password incorrecto")
             }
-            res.redirect(`/productos/${exist._id}`)
+            console.log(exist._id)
+            done(null,exist)
         }catch (error){
-            res.send({result:"Error",error:error.message})
+            done(error)
         }
     }
 ))
 
 passport.serializeUser((user,done) =>{
-    console.log(user,"usuario")
+    // console.log(user,"usuario")
     done(null,user._id)
 })
 
