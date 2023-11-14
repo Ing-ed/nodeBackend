@@ -67,10 +67,21 @@ router.put("/:cid", async (req,res) =>{
     //console.log("aca")
     //console.log(req.body)
     try{
-        let result = await cartModel.updateOne(
+        // let result = await cartModel.updateOne(
+        //     {_id:cid},
+        //     {$push:{products:{product:prodId.toString(),quantity:quantity}}}
+        // )
+        let result = await cartModel.findOneAndUpdate(
+            {_id:cid,'products.product':prodId},
+            {$inc:{'products.$.quantity':+quantity}},
+            {new:true}
+        )
+        if(!result){
+            let result = await cartModel.updateOne(
             {_id:cid},
             {$push:{products:{product:prodId.toString(),quantity:quantity}}}
-        )
+        )}
+        console.log(result)
         res.send({result:"Success",payload:result})
     } catch (error) {
         //console.log("error",error.message)

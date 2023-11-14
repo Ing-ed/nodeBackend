@@ -59,16 +59,25 @@ router.get("/failLog",async (req,res) =>{
 //     // res.send("Session iniciada");
 // })
 router.get("/logout", async (req,res) =>{
-    console.log(req)
+    // console.log(req)
     try{
-        req.session.destroy(function (err){
-            res.redirect('/login')
-        })
+        req.session.destroy()
+        res.redirect('/login')
         console.log("logout")
     } catch (error){
         res.send({error:error.message})
     }
     
+})
+//signup github
+router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGitHub',scope:["user:email"]}))
+
+router.get("/gitCallback",passport.authenticate('github'),(req,res)=>{
+    console.log(req.user)
+    return res.redirect(`/productos/${req.user._id}`)
+})
+router.get("/failGitHub",(req,res) =>{
+    res.send("Error")
 })
 
 

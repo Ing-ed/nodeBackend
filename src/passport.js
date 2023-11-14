@@ -1,8 +1,10 @@
 import passport from "passport";
+import {Strategy as GitHubStrategy} from 'passport-github2'
 import { Strategy as localStrategy } from "passport-local";
 import { userModel } from "./models/user.model.js";
 import { CreateHash,CompareHash } from "./utils.js";
 
+// console.log(process.env)
 passport.use("register",new localStrategy(
     {passReqToCallback:true, usernameField:'email',passwordField:'pass'},
     async function(req,username,password,done){
@@ -48,6 +50,39 @@ passport.use("login",new localStrategy(
     }
 ))
 
+passport.use("github",new GitHubStrategy({
+    clientID:"Iv1.049bf7e511dc969b",
+    clientSecret:"459395e41e0c3035adf41777aa12975546a9c002",
+    callbackURL:"http://localhost:8080/sessions/gitCallback",
+    scope:['user:email']
+}, async (accessToken,refreshToken,profile,done)=>{
+    console.log(profile._json.email)
+    try {
+        const user = await userModel.findOne({email:profile._json.email})
+        if(user){
+            if(user.isThird){
+                return done(null,user)
+            } else {
+                return done(null,false)
+            }
+        } else {
+            let userInfo ={
+                firstName:profile._json.name.split(' ')[0],
+                lastName:profile._json.name.split(' ')[1],
+                userName:profile._json.login,
+                email:profile._json.email,
+                pass:" ",
+                isThird:true,
+            }
+            console.log(userInfo)
+            let result = await userModel.create(userInfo)
+            return done(null,result)
+        }
+    } catch (error) {
+        done(error)
+    }
+    done(null,false)
+}))
 passport.serializeUser((user,done) =>{
     // console.log(user,"usuario")
     done(null,user._id)

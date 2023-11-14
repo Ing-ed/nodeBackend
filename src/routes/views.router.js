@@ -38,11 +38,13 @@ router.get("/productos/:uid",async (req,res) =>{
             })
         }
         let username = await userModel.findOne({_id:uid}) //se supone que el usuario ya existe sino no se puede mostrar esta pagina
-        let {user, rol} = username
+        let {userName, rol} = username
+        console.log(username.userName)  
+        rol = rol === "true" ? "admin": ""
         let idCart = cart._id.toString()
         let result = await productModel.find().lean()
         //console.log(cart)
-        res.render('productos',{result,idCart,user,rol})
+        res.render('productos',{result,idCart,userName, rol})
     } catch (error){
         res.send({result:"error",error:error.message})
     }
@@ -64,7 +66,9 @@ router.get("/cart/:cid", async (req,res) =>{
 router.get("/login/:message?",(req,res) => {
     const {message} = req.params
     if(message)
-    res.render('login',{Message:"Algo salio mal"})
+        res.render('login',{Message:"Algo salio mal"})
+    else
+        res.render('login',{Message:"Inicio de sesion"})
 })
 
 router.get("/signup",(req,res) =>{
