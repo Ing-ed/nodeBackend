@@ -3,6 +3,7 @@ import { foods } from "../../resources/foods.js";
 import { productModel } from "../models/products.models.js";
 import { cartModel } from "../models/carts.model.js";
 import { userModel } from "../models/user.model.js";
+import passport from "passport";
 // import { ProductManager } from "../views/Dao/Products.js";
 
 const router = Router();
@@ -14,6 +15,12 @@ let prods = []
 // })
 
 
+router.get("/current",passport.authenticate('jwt',{session:false,failureRedirect:'kk'}),(req,res)=>{
+    res.send(req.user)
+})
+router.get("/kk",(req,res)=>{
+    res.send("NOOO")
+})
 
 router.get("/",(req,res) => {
     res.render('home',{prods})

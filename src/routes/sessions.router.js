@@ -74,7 +74,7 @@ router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGi
 
 router.get("/gitCallback",passport.authenticate('github'),(req,res)=>{
     console.log(req.user)
-    return res.redirect(`/productos/${req.user._id}`)
+    return res.cookie('pruebaToken').redirect(`/productos/${req.user._id}`)
 })
 router.get("/failGitHub",(req,res) =>{
     res.send("Error")

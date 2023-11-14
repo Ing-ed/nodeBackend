@@ -1,10 +1,33 @@
 import passport from "passport";
+import jwt, { ExtractJwt } from 'passport-jwt'
 import {Strategy as GitHubStrategy} from 'passport-github2'
 import { Strategy as localStrategy } from "passport-local";
 import { userModel } from "./models/user.model.js";
 import { CreateHash,CompareHash } from "./utils.js";
 
+
+const JWTStrategy = jwt.Strategy;
 // console.log(process.env)
+passport.use('jwt',new JWTStrategy({
+    jwtFromRequest:ExtractJwt.fromExtractors([cookieExtractor]),
+    secretOrKey:'mobyDick'
+}, async (jwt_payload,done)=>{
+    try {
+        return done(null,jwt_payload)
+    } catch (error) {
+        return done(error)
+    }
+}
+))
+
+function cookieExtractor(req){
+    let token = null;
+    if(req && req.cookies){
+        token = req.cookies['authCookie']
+    }
+    return token
+}
+
 passport.use("register",new localStrategy(
     {passReqToCallback:true, usernameField:'email',passwordField:'pass'},
     async function(req,username,password,done){
