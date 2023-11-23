@@ -14,6 +14,9 @@ const userSchema = new mongoose.Schema({
         required:true,
         unique:true
     },
+    age:{
+        type:Number
+    },
     email:{
         type:String,
         required:true,
@@ -25,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     rol:{
         type:String,
-        default:false
+        default:'user'
     },
     isThird:{
         type:Boolean,
