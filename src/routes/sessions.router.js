@@ -18,6 +18,7 @@ router.get("/leer",(req,res) =>{
 router.get("/signed",(req,res) =>{
     res.cookie("cookie2","firmada",{signed:true,maxAge:20000}).send("2da cookie enviada")
 })
+//registro con passport
 router.post("/signup/",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
     console.log(req.body)
     res.send({status:"success",message:"usuario registrado"})
@@ -27,38 +28,38 @@ router.get('/failReg', async (req,res) =>{
     console.log(req.session.messages, typeof(req.session.messages))
     res.redirect('/signup/error')
 })
-
-router.post("/login/",passport.authenticate('login',{failureRedirect:'/sessions/failLog'}), async (req,res) =>{
-    console.log(req.user,"usuario")
-    return res.redirect(`/productos/${req.user._id}`)
-})
+//login con passport
+// router.post("/login/",passport.authenticate('login',{failureRedirect:'/sessions/failLog'}), async (req,res) =>{
+//     console.log(req.user,"usuario")
+//     return res.redirect(`/productos/${req.user._id}`)
+// })
 
 router.get("/failLog",async (req,res) =>{
     // console.log()
     return res.redirect(`/login/error`)
 })
 
-// router.post("/login",async (req,res) =>{
-//     const {email, pass} = req.body;
-//     console.log(email,pass);
-//     try{
-//         let exist = await userModel.findOne({email:email})
-//         if(!exist){
-//             return res.redirect("/signup")
-//         }
-//         console.log(CompareHash(pass,exist))
-//         if(!CompareHash(pass,exist)){
-//         // if(exist.pass !== pass){
-//             return res.send("password incorrecto")
-//         }
-//         res.redirect(`/productos/${exist._id}`)
-//     }catch (error){
-//         res.send({result:"Error",error:error.message})
-//     }
-//     // req.session.user = user;
-//     // req.session.pass = pass;
-//     // res.send("Session iniciada");
-// })
+router.post("/login",async (req,res) =>{
+    const {email, pass} = req.body;
+    console.log(email,pass);
+    try{
+        let exist = await userModel.findOne({email:email})
+        if(!exist){
+            return res.redirect("/signup")
+        }
+        console.log(exist._id)
+        console.log(CompareHash(pass,exist))
+        if(!CompareHash(pass,exist)){
+            return res.send("password incorrecto")
+        }
+        res.redirect(`/productos/${exist._id}`)
+    }catch (error){
+        res.send({result:"Error",error:error.message})
+    }
+    // req.session.user = user;
+    // req.session.pass = pass;
+    // res.send("Session iniciada");
+})
 router.get("/logout", async (req,res) =>{
     // console.log(req)
     try{

@@ -31,14 +31,14 @@ function cookieExtractor(req){
 passport.use("register",new localStrategy(
     {passReqToCallback:true, usernameField:'email',passwordField:'pass'},
     async function(req,username,password,done){
-        console.log(req.body.email)
+        console.log({...req.body,pass:CreateHash(password),username:username})
         try{
             console.log(username,password)
             let user = await userModel.findOne({email:username})
             if(user !== null){
                 return done(null,false,{message:"exist"})
             } else {
-                let result = await userModel.create({user:req.body.user,email:username,pass:CreateHash(password)})
+                let result = await userModel.create({...req.body,pass:CreateHash(password)})
                 return done(null,result)
             }
             console.log(user);
