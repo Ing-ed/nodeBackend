@@ -6,7 +6,7 @@ import { jwtAuthenticate } from '../middlewares/auth.middleware.js';
 import passport from 'passport';
 const router = Router();
 
-router.get('/:uid',jwtValidation,jwtAuthenticate, async(req,res) =>{
+router.get('/:uid',passport.authenticate("jwt",{session:false}),jwtAuthenticate, async(req,res) =>{
     const {uid} = req.params;
     // console.log(req.user)
     res.json({estado:"aca"})

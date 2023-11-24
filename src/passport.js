@@ -2,28 +2,26 @@ import passport from "passport";
 import jwt, { ExtractJwt } from 'passport-jwt'
 import {Strategy as GitHubStrategy} from 'passport-github2'
 import { Strategy as localStrategy } from "passport-local";
+import { Strategy as JWTStrategy } from "passport-jwt";
 import { userModel } from "./models/user.model.js";
 import { CreateHash,CompareHash } from "./utils.js";
 
 
-const JWTStrategy = jwt.Strategy;
-// console.log(process.env)
-passport.use('jwt',new JWTStrategy({
-    jwtFromRequest:ExtractJwt.fromExtractors([cookieExtractor]),
-    secretOrKey:'mobyDick'
-}, async (jwt_payload,done)=>{
-    try {
-        return done(null,jwt_payload)
-    } catch (error) {
-        return done(error)
-    }
-}
-))
+passport.use("jwt", new JWTStrategy({
+    secretOrKey:"mobyDick",
+    jwtFromRequest: cookieExtractor
+    // jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken()
+}, 
+async function (jwt_payload,done){
+    console.log("payload",jwt_payload);
+    return done(null,jwt_payload);
+}))
 
 function cookieExtractor(req){
+    console.log("extract")
     let token = null;
     if(req && req.cookies){
-        token = req.cookies['authCookie']
+        token = req.cookies['auth']
     }
     return token
 }
@@ -106,6 +104,10 @@ passport.use("github",new GitHubStrategy({
     }
     done(null,false)
 }))
+
+
+
+
 passport.serializeUser((user,done) =>{
     // console.log(user,"usuario")
     done(null,user._id)
