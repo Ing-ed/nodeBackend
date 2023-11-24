@@ -65,7 +65,7 @@ router.post("/login",async (req,res) =>{
         const {firstName, lastName,rol} = exist
         const token = TokenGen({firstName,lastName,email,rol})
         console.log(token)
-        res.cookie("auth",token).redirect(`/productos/${exist._id}`)
+        res.cookie("auth",token,{httpOnly:true}).redirect(`/productos/${exist._id}`)
         // res.json({message:"Token",token:token})
         // res.redirect(`/productos/${exist._id}`)
     }catch (error){
