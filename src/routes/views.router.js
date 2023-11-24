@@ -78,8 +78,13 @@ router.get("/login/:message?",(req,res) => {
         res.render('login',{Message:"Inicio de sesion"})
 })
 
-router.get("/signup",(req,res) =>{
-    res.render('signup')
+router.get("/signup/:message?",(req,res) =>{
+    const {message} = req.params
+    let msg = ""
+    if(message){
+        msg = "algo salio mal, reintente"
+    }
+    res.render('signup',{msg:msg})
 })
 router.get("/restore",(req,res)=>{
     res.render('restorePass')

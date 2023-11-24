@@ -18,14 +18,14 @@ router.get("/leer",(req,res) =>{
 router.get("/signed",(req,res) =>{
     res.cookie("cookie2","firmada",{signed:true,maxAge:20000}).send("2da cookie enviada")
 })
-router.post("/signup",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
+router.post("/signup/",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
     console.log(req.body)
     res.send({status:"success",message:"usuario registrado"})
 })
 router.get('/failReg', async (req,res) =>{
     console.log("falla");
-    console.log(req.session.messages)
-    res.send({sttaus:"Fallo",msg:req.session.messages})
+    console.log(req.session.messages, typeof(req.session.messages))
+    res.redirect('/signup/error')
 })
 
 router.post("/login/",passport.authenticate('login',{failureRedirect:'/sessions/failLog'}), async (req,res) =>{
@@ -37,6 +37,7 @@ router.get("/failLog",async (req,res) =>{
     // console.log()
     return res.redirect(`/login/error`)
 })
+
 // router.post("/login",async (req,res) =>{
 //     const {email, pass} = req.body;
 //     console.log(email,pass);
