@@ -2,6 +2,8 @@
 import { Router } from "express";
 import { cartModel } from "../models/carts.model.js";
 import { productModel } from "../models/products.models.js";
+import { jwtValidation } from "../middlewares/jwt.middleware.js";
+import { jwtAuthenticate } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 // const manager = new ProductManager("productos.json","carrito.json");
@@ -61,11 +63,11 @@ router.post("/",async (req,res) =>{
     // })
 })
 
-router.put("/:cid", async (req,res) =>{
+router.put("/:cid",jwtValidation,jwtAuthenticate, async (req,res) =>{
     let {cid} = req.params
     let {prodId,quantity} = req.body
     //console.log("aca")
-    //console.log(req.body)
+    console.log(req.body)
     try{
         // let result = await cartModel.updateOne(
         //     {_id:cid},
@@ -81,11 +83,16 @@ router.put("/:cid", async (req,res) =>{
             {_id:cid},
             {$push:{products:{product:prodId.toString(),quantity:quantity}}}
         )}
-        console.log(result)
+        console.log(result, "result")
         res.send({result:"Success",payload:result})
     } catch (error) {
         //console.log("error",error.message)
-        res.send({result:"error",error:error.message});
+        if(error.message.includes('expired')){
+            res.send("tiempo expirado")
+            console.log("expired")
+        }
+        else
+            res.send({result:"error",error:error.message});
     }
 })
 

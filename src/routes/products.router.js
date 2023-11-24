@@ -6,12 +6,6 @@ import mongoosePaginate from 'mongoose-paginate-v2'
 const router = Router();
 
 // const manager = new ProductManager("productos.json");
-//PAGINACION
-// async function Paginar(){
-//     let productos = await productModel.paginate({category:"transistores"},{limit:4,page:1})
-//     //console.log(productos)
-// }
-// Paginar();
 
 // get
 router.get("/",async (req,res) =>{

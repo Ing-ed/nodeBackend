@@ -2,11 +2,11 @@ import {Router} from 'express';
 import {userModel} from '../models/user.model.js'
 import { CreateHash } from '../utils.js';
 import { jwtValidation } from '../middlewares/jwt.middleware.js';
+import { jwtAuthenticate } from '../middlewares/auth.middleware.js';
 import passport from 'passport';
-import { auth } from '../middlewares/auth.middleware.js';
 const router = Router();
 
-router.get('/:uid',jwtValidation,auth, async(req,res) =>{
+router.get('/:uid',jwtValidation,jwtAuthenticate, async(req,res) =>{
     const {uid} = req.params;
     // console.log(req.user)
     res.json({estado:"aca"})
