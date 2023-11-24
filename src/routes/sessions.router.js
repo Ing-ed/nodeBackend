@@ -1,6 +1,6 @@
 import { Router } from "express";
 import {userModel} from '../models/user.model.js'
-import { CompareHash } from "../utils.js";
+import { CompareHash, TokenGen } from "../utils.js";
 import passport from "passport";
 
 const router = Router();
@@ -19,24 +19,34 @@ router.get("/signed",(req,res) =>{
     res.cookie("cookie2","firmada",{signed:true,maxAge:20000}).send("2da cookie enviada")
 })
 //registro con passport
-router.post("/signup/",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
-    console.log(req.body)
-    res.send({status:"success",message:"usuario registrado"})
-})
-router.get('/failReg', async (req,res) =>{
-    console.log("falla");
-    console.log(req.session.messages, typeof(req.session.messages))
-    res.redirect('/signup/error')
-})
+// router.post("/signup/",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
+//     console.log(req.body)
+//     res.send({status:"success",message:"usuario registrado"})
+// })
+// router.get('/failReg', async (req,res) =>{
+//     console.log("falla");
+//     console.log(req.session.messages, typeof(req.session.messages))
+//     res.redirect('/signup/error')
+// })
 //login con passport
 // router.post("/login/",passport.authenticate('login',{failureRedirect:'/sessions/failLog'}), async (req,res) =>{
 //     console.log(req.user,"usuario")
 //     return res.redirect(`/productos/${req.user._id}`)
 // })
-
-router.get("/failLog",async (req,res) =>{
-    // console.log()
-    return res.redirect(`/login/error`)
+// router.get("/failLog",async (req,res) =>{
+//     // console.log()
+//     return res.redirect(`/login/error`)
+// })
+router.post("/signup", async (req,res) =>{
+    console.log(req.body)
+    let {user, email, pass} = req.body;
+    try{
+        let passHash = CreateHash(pass)
+        let result = await userModel.create({...req.body,pass:passHash})
+        res.redirect('/login')
+    } catch (error){
+        res.send({result:"Error",error:error.message})
+    }
 })
 
 router.post("/login",async (req,res) =>{
@@ -52,7 +62,11 @@ router.post("/login",async (req,res) =>{
         if(!CompareHash(pass,exist)){
             return res.send("password incorrecto")
         }
-        res.redirect(`/productos/${exist._id}`)
+        const {firstName, lastName,rol} = exist
+        const token = TokenGen({firstName,lastName,email,rol})
+        console.log(token)
+        res.json({message:"Token",token:token})
+        // res.redirect(`/productos/${exist._id}`)
     }catch (error){
         res.send({result:"Error",error:error.message})
     }
@@ -60,6 +74,7 @@ router.post("/login",async (req,res) =>{
     // req.session.pass = pass;
     // res.send("Session iniciada");
 })
+
 router.get("/logout", async (req,res) =>{
     // console.log(req)
     try{
@@ -71,6 +86,7 @@ router.get("/logout", async (req,res) =>{
     }
     
 })
+
 //signup github
 router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGitHub',scope:["user:email"]}))
 
