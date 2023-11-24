@@ -2,6 +2,7 @@ import { Router } from "express";
 import {userModel} from '../models/user.model.js'
 import { CompareHash, TokenGen } from "../utils.js";
 import passport from "passport";
+import { float } from "webidl-conversions";
 
 const router = Router();
 router.get("/",(req,res) =>{
@@ -18,7 +19,7 @@ router.get("/leer",(req,res) =>{
 router.get("/signed",(req,res) =>{
     res.cookie("cookie2","firmada",{signed:true,maxAge:20000}).send("2da cookie enviada")
 })
-//registro con passport
+// registro con passport
 // router.post("/signup/",passport.authenticate('register',{failureRedirect:'failReg',successRedirect:'/login', failureMessage:true}), async (req,res) =>{
 //     console.log(req.body)
 //     res.send({status:"success",message:"usuario registrado"})
@@ -28,7 +29,7 @@ router.get("/signed",(req,res) =>{
 //     console.log(req.session.messages, typeof(req.session.messages))
 //     res.redirect('/signup/error')
 // })
-//login con passport
+// // login con passport
 // router.post("/login/",passport.authenticate('login',{failureRedirect:'/sessions/failLog'}), async (req,res) =>{
 //     console.log(req.user,"usuario")
 //     return res.redirect(`/productos/${req.user._id}`)
@@ -37,6 +38,9 @@ router.get("/signed",(req,res) =>{
 //     // console.log()
 //     return res.redirect(`/login/error`)
 // })
+
+
+
 router.post("/signup", async (req,res) =>{
     console.log(req.body)
     let {user, email, pass} = req.body;
@@ -66,14 +70,9 @@ router.post("/login",async (req,res) =>{
         const token = TokenGen({firstName,lastName,email,rol})
         console.log(token)
         res.cookie("auth",token).redirect(`/productos/${exist._id}`)
-        // res.json({message:"Token",token:token})
-        // res.redirect(`/productos/${exist._id}`)
     }catch (error){
         res.send({result:"Error",error:error.message})
     }
-    // req.session.user = user;
-    // req.session.pass = pass;
-    // res.send("Session iniciada");
 })
 
 router.get("/logout", async (req,res) =>{
@@ -86,6 +85,11 @@ router.get("/logout", async (req,res) =>{
         res.send({error:error.message})
     }
     
+})
+
+router.get('/current', passport.authenticate("current",{session:false}), async(req, res)=>{
+    // console.log(req)
+    res.json(req.user)
 })
 
 //signup github

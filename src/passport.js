@@ -10,7 +10,6 @@ import { CreateHash,CompareHash } from "./utils.js";
 passport.use("jwt", new JWTStrategy({
     secretOrKey:"mobyDick",
     jwtFromRequest: cookieExtractor
-    // jwtFromRequest:ExtractJwt.fromAuthHeaderAsBearerToken()
 }, 
 async function (jwt_payload,done){
     console.log("payload",jwt_payload);
@@ -18,10 +17,11 @@ async function (jwt_payload,done){
 }))
 
 function cookieExtractor(req){
-    console.log("extract")
+    // console.log("extract",req,"coockies",req.cookies)
     let token = null;
     if(req && req.cookies){
         token = req.cookies['auth']
+        // console.log(token)
     }
     return token
 }
@@ -106,7 +106,14 @@ passport.use("github",new GitHubStrategy({
 }))
 
 
-
+passport.use("current", new JWTStrategy({
+    secretOrKey:"mobyDick",
+    jwtFromRequest: cookieExtractor
+}, 
+async function (jwt_payload,done){
+    console.log("payload",jwt_payload);
+    return done(null,jwt_payload);
+}))
 
 passport.serializeUser((user,done) =>{
     // console.log(user,"usuario")
