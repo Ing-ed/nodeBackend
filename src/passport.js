@@ -1,21 +1,42 @@
 import passport from "passport";
+import jwt, { ExtractJwt } from 'passport-jwt'
 import {Strategy as GitHubStrategy} from 'passport-github2'
 import { Strategy as localStrategy } from "passport-local";
+import { Strategy as JWTStrategy } from "passport-jwt";
 import { userModel } from "./models/user.model.js";
 import { CreateHash,CompareHash } from "./utils.js";
 
-// console.log(process.env)
+
+passport.use("jwt", new JWTStrategy({
+    secretOrKey:"mobyDick",
+    jwtFromRequest: cookieExtractor
+}, 
+async function (jwt_payload,done){
+    console.log("payload",jwt_payload);
+    return done(null,jwt_payload);
+}))
+
+function cookieExtractor(req){
+    // console.log("extract",req,"coockies",req.cookies)
+    let token = null;
+    if(req && req.cookies){
+        token = req.cookies['auth']
+        // console.log(token)
+    }
+    return token
+}
+
 passport.use("register",new localStrategy(
     {passReqToCallback:true, usernameField:'email',passwordField:'pass'},
     async function(req,username,password,done){
-        console.log(req.body.email)
+        console.log({...req.body,pass:CreateHash(password),username:username})
         try{
             console.log(username,password)
             let user = await userModel.findOne({email:username})
             if(user !== null){
-                return done(null,false)
+                return done(null,false,{message:"exist"})
             } else {
-                let result = await userModel.create({user:req.body.user,email:username,pass:CreateHash(password)})
+                let result = await userModel.create({...req.body,pass:CreateHash(password)})
                 return done(null,result)
             }
             console.log(user);
@@ -63,7 +84,8 @@ passport.use("github",new GitHubStrategy({
             if(user.isThird){
                 return done(null,user)
             } else {
-                return done(null,false)
+                user.isThird = true
+                return done(null,user)
             }
         } else {
             let userInfo ={
@@ -83,6 +105,17 @@ passport.use("github",new GitHubStrategy({
     }
     done(null,false)
 }))
+
+
+passport.use("current", new JWTStrategy({
+    secretOrKey:"mobyDick",
+    jwtFromRequest: cookieExtractor
+}, 
+async function (jwt_payload,done){
+    console.log("payload",jwt_payload);
+    return done(null,jwt_payload);
+}))
+
 passport.serializeUser((user,done) =>{
     // console.log(user,"usuario")
     done(null,user._id)

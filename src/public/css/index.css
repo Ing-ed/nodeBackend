@@ -23,7 +23,7 @@
     background-color: #FBFBFB;
     padding:0.5em;
     border-radius: 5px;
-    max-width: fit-content;
+    max-width: 25em;
     min-height: 300px;
     display: flex;
     flex-direction: column;

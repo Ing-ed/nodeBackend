@@ -1,14 +1,19 @@
 <div id = "index">
+    <h2>{{msg}}</h2>
     <form action="/sessions/signup" method="post">
+        <label>first name</label>        
+        <input type="text" name = "firstName">
+        <label>last name</label>        
+        <input type="text" name = "lastName">
         <label>user</label>        
-        <input type="text" name = "user">
+        <input type="text" name = "userName">
         <label>email</label>        
         <input type="email" name = "email">
         <label>pass</label>
         <input type="password" name = "pass">
         <input type="submit" value="Sign Up">
     </form>
-    <a href="/sessions/autGithub">dale con github</a>
     <p>Ya estas registrado?</p>
     <a href="/login">Inicia sesion</a>
+    <a href="/sessions/autGithub">dale con github</a>
 </div>

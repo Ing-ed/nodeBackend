@@ -3,6 +3,7 @@ import { foods } from "../../resources/foods.js";
 import { productModel } from "../models/products.models.js";
 import { cartModel } from "../models/carts.model.js";
 import { userModel } from "../models/user.model.js";
+import passport from "passport";
 // import { ProductManager } from "../views/Dao/Products.js";
 
 const router = Router();
@@ -14,9 +15,15 @@ let prods = []
 // })
 
 
+router.get("/current",passport.authenticate('jwt',{session:false,failureRedirect:'kk'}),(req,res)=>{
+    res.send(req.user)
+})
+router.get("/kk",(req,res)=>{
+    res.send("NOOO")
+})
 
 router.get("/",(req,res) => {
-    res.render('home',{prods})
+    res.redirect('/login')
 })
 
 router.get("/realtimeproducts",(req,res) =>{
@@ -71,8 +78,13 @@ router.get("/login/:message?",(req,res) => {
         res.render('login',{Message:"Inicio de sesion"})
 })
 
-router.get("/signup",(req,res) =>{
-    res.render('signup')
+router.get("/signup/:message?",(req,res) =>{
+    const {message} = req.params
+    let msg = ""
+    if(message){
+        msg = "algo salio mal, reintente"
+    }
+    res.render('signup',{msg:msg})
 })
 router.get("/restore",(req,res)=>{
     res.render('restorePass')
