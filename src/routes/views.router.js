@@ -16,6 +16,7 @@ let prods = []
 
 
 router.get("/current",passport.authenticate('jwt',{session:false,failureRedirect:'kk'}),(req,res)=>{
+    console.log(req.user)
     res.send(req.user)
 })
 router.get("/kk",(req,res)=>{

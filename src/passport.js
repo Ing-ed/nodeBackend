@@ -74,7 +74,7 @@ passport.use("login",new localStrategy(
 passport.use("github",new GitHubStrategy({
     clientID:"Iv1.049bf7e511dc969b",
     clientSecret:"459395e41e0c3035adf41777aa12975546a9c002",
-    callbackURL:"http://localhost:8080/sessions/gitCallback",
+    callbackURL:"http://localhost:8080/api/sessions/gitCallback",
     scope:['user:email']
 }, async (accessToken,refreshToken,profile,done)=>{
     console.log(profile._json.email)

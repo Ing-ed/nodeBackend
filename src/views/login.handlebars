@@ -1,5 +1,5 @@
 <div id = "index">
-    <form action="/sessions/login" id = "login" method="post">
+    <form action="/api/sessions/login" id = "login" method="post">
     <h1>{{Message}}</h1>
         <input type = "email" name = "email" placeholder="email">
         <input type = "password" name = "pass" placeholder="contraseña">
@@ -11,6 +11,6 @@
     </form>
     <p>No estas registrado?</p>
     <a href="/signup">Registrate</a>
-    <a href="/sessions/autGithub">Inicia sesion con Github</a>
+    <a href="/api/sessions/autGithub">Inicia sesion con Github</a>
     <script src="./js/login.js"></script>
 </div>
