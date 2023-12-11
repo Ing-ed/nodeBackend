@@ -1,8 +1,10 @@
 import { Router } from "express";
 import {userModel} from '../models/user.model.js'
 import { CompareHash, TokenGen } from "../utils.js";
+import SessionManager from '../dao/sessions.dao.js'
 import passport from "passport";
-import { float } from "webidl-conversions";
+
+const sessionManager = new SessionManager()
 
 const router = Router();
 router.get("/",(req,res) =>{
@@ -42,41 +44,31 @@ router.get("/signed",(req,res) =>{
 
 
 router.post("/signup", async (req,res) =>{
-    console.log(req.body)
-    let {user, email, pass} = req.body;
-    try{
-        let passHash = CreateHash(pass)
-        let result = await userModel.create({...req.body,pass:passHash})
-        res.redirect('/login')
-    } catch (error){
-        res.send({result:"Error",error:error.message})
-    }
+    let result = await sessionManager.SignUp(req.body)
+    res.redirect(result === 0 ? '/login' : '/signup')
 })
 
 router.post("/login",async (req,res) =>{
-    const {email, pass} = req.body;
-    console.log(email,pass);
-    try{
-        let exist = await userModel.findOne({email:email})
-        if(!exist){
-            return res.redirect("/signup")
-        }
-        console.log(exist._id)
-        console.log(CompareHash(pass,exist))
-        if(!CompareHash(pass,exist)){
-            return res.send("password incorrecto")
-        }
-        const {firstName, lastName,rol} = exist
-        const token = TokenGen({firstName,lastName,email,rol})
-        console.log(token)
-        res.cookie("auth",token).redirect(`/productos/${exist._id}`)
-    }catch (error){
-        res.send({result:"Error",error:error.message})
+    let result = await sessionManager.LogIn(req.body);
+    if(result[0] === null){
+        return res.redirect('/login/err')
+    }
+    const token = result[1]
+    return res.cookie("auth",token).redirect(`/productos/${result[0]._id}`)
+})
+
+router.post("/restore", async (req,res) =>{
+    console.log("restore")
+    let result = await sessionManager.RestorePass(req.body)
+    console.log(result)
+    if(result > 0){
+        return res.redirect('/restore/err')
+    } else {
+        return res.redirect('/login')
     }
 })
 
 router.get("/logout", async (req,res) =>{
-    // console.log(req)
     try{
         req.session.destroy()
         res.redirect('/login')
@@ -87,32 +79,32 @@ router.get("/logout", async (req,res) =>{
     
 })
 
-router.get('/current', passport.authenticate("current",{session:false}), async(req, res)=>{
-    // console.log(req)
-    res.json(req.user)
-})
+// router.get('/current', passport.authenticate("current",{session:false}), async(req, res)=>{
+//     // console.log(req)
+//     res.json(req.user)
+// })
 
-//signup github
-router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGitHub',passReqToCallback:true,scope:["user:email"]}))
+// //signup github
+// router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGitHub',passReqToCallback:true,scope:["user:email"]}))
 
-router.get("/gitCallback",passport.authenticate('github'),(req,res)=>{
-    console.log(req.user)
-    console.log("aca")
-    const {firstName, lastName,email,rol} = req.user
-    const token = TokenGen({firstName,lastName,email,rol})
-    console.log(token)
-    return res.cookie('auth',token).redirect(`/productos/${req.user._id}`)
-})
-router.get("/failGitHub",(req,res) =>{
-    res.send("Error")
-})
+// router.get("/gitCallback",passport.authenticate('github'),(req,res)=>{
+//     console.log(req.user)
+//     console.log("aca")
+//     const {firstName, lastName,email,rol} = req.user
+//     const token = TokenGen({firstName,lastName,email,rol})
+//     console.log(token)
+//     return res.cookie('auth',token).redirect(`/productos/${req.user._id}`)
+// })
+// router.get("/failGitHub",(req,res) =>{
+//     res.send("Error")
+// })
 
-router.get("/current",passport.authenticate('jwt',{failureRedirect:'Err'}, async(req,res) =>{
-    res.redirect("/current")
-}))
-router.get("/Err", (req,res) =>{
-    res.redirect("/login/err");
-})
+// router.get("/current",passport.authenticate('jwt',{failureRedirect:'Err'}, async(req,res) =>{
+//     res.redirect("/current")
+// }))
+// router.get("/Err", (req,res) =>{
+//     res.redirect("/login/err");
+// })
 
 
 export default router;

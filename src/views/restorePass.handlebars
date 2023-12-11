@@ -1,5 +1,6 @@
 <div id = index>
-    <form id = "restore" action="/api/users/restore" method="post" >
+    <h1>{{Message}}</h1>
+    <form id = "restore" action="/api/sessions/restore" method="post" >
         <label>E-mail</label>
         <input name = "email" placeholder="email">
         <label>Password</label>
@@ -8,4 +9,5 @@
         <input name = "confirm" type="password">
         <input type = "submit" value="Enviar">        
     </form>
+    <a href="/login">Ir a LogIn</a>
 </div>

@@ -87,8 +87,13 @@ router.get("/signup/:message?",(req,res) =>{
     }
     res.render('signup',{msg:msg})
 })
-router.get("/restore",(req,res)=>{
-    res.render('restorePass')
+router.get("/restore/:message?",(req,res)=>{
+    const {message} = req.params
+    if(message){
+        res.render('restorePass',{Message:"Algo salio mal"})
+    } else{
+        res.render('restorePass',{Message:"Recupera tu contraseña"})
+    }
 })
 
 export default router

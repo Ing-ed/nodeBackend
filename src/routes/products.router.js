@@ -1,9 +1,6 @@
 // import { ProductManager } from "../views/Dao/Products.js";
 import { Router } from "express";
-import { Validar } from "../../resources/Validacion.js";
-import { productModel } from "../models/products.models.js";
 import prodManager from "../dao/products.dao.js";
-import mongoosePaginate from 'mongoose-paginate-v2'
 const router = Router();
 
 // const manager = new ProductManager("productos.json");
