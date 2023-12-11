@@ -10,12 +10,6 @@ router.get('/:uid',passport.authenticate("jwt",{session:false}),jwtAuthenticate,
     const {uid} = req.params;
     // console.log(req.user)
     res.json({estado:"aca"})
-    // try {
-    //     const user = userModel.findById(uid);
-    //     res.json({message:"usuario",user})
-    // } catch (error) {
-    //     res.json({error:error.message})        
-    // }
 })
 
 router.get('/', async (req,res) =>{
