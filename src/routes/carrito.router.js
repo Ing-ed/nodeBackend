@@ -99,36 +99,12 @@ router.delete("/:cid",async (req,res) =>{
         console.log(result)
         return res.redirect(`/cart/${cid}`)
     }
-    // //console.log("aca")
-    // try{
-    //     let result = await cartModel.updateOne(
-    //         {cartId:+cid},
-    //         {$set: {products:[]}}
-    //     )
-    //     console.log(result,"result")
-    //     res.redirect(`/cart/${cid}`)
-    //     // res.send({result:"Success",payload:result})
-    // } catch (error) {
-    //     res.send({result:"Error",error:error.message})
-
-    // }
 })
 
 router.delete("/:cid/products/:pid", async (req,res) =>{
-    let {cid, pid} = req.params;
-    //console.log(cid,pid)
-    try{
-        
-        let result = await cartModel.updateOne(
-            {cartId:cid},
-            {$pull:{products : {prodId: +pid}}}                
-            )
-        res.send({result:"succes",payload:result})
-    } catch(error){
-        //console.log(error)
-
-    }
-    // let result = await cartModel.deleteOne({})
+    let result = await cartManager.CleanProdFromCart(req.params);
+    console.log("resultado",result)
+    res.send(result.payload? result.payload.acknowledged : result.error);
 })
 
 export default router;

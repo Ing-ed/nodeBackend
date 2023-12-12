@@ -98,4 +98,17 @@ class CartManager{
             return(error.message)
         }
     }
+    async CleanProdFromCart(params){
+        console.log("clean")
+        let {cid, pid} = params;
+        try{
+            let result = await cartModel.updateOne(
+                {cartId:cid},
+                {$pull:{products : {product: pid}}}                
+                )
+            return({result:"succes",payload:result})
+        } catch(error){
+            return({result:"error",error:error.message})    
+        }
+    }
 } export default CartManager
