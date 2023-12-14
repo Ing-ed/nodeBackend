@@ -21,17 +21,17 @@ router.get('/', async (req,res) =>{
     }
 })
 
-router.post("/restore", async (req,res) =>{
-    let { email, pass, confirm} = req.body
-    console.log("aca")
-    try{
-        if(pass !== confirm){
-            res.send("Las contraseñas no coinciden")
-        }
-        let result = await userModel.updateOne({email:email},{pass:CreateHash(pass)})
-        res.redirect("/login")
-    } catch (error) {
-        res.send({result:"Error",error:error.message})
-    }
-})
+// router.post("/restore", async (req,res) =>{
+//     let { email, pass, confirm} = req.body
+//     console.log("aca")
+//     try{
+//         if(pass !== confirm){
+//             res.send("Las contraseñas no coinciden")
+//         }
+//         let result = await userModel.updateOne({email:email},{pass:CreateHash(pass)})
+//         res.redirect("/login")
+//     } catch (error) {
+//         res.send({result:"Error",error:error.message})
+//     }
+// })
 export default router

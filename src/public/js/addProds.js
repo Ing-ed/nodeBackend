@@ -14,9 +14,13 @@ buttons.map((item) =>{
             })
         })
         .then((r) => r.json())
-        .then((r) => console.log(r))
-        console.log(item.parentNode.getElementsByClassName("cant")[0].value,"paren")
-        console.log("nombre",item.name,window.location.host)
+        .then((r) => {
+            if(r.error){
+                window.alert(`Algo salio mal \n ${r.error}`);
+            }
+            console.log(r.error,"resp")})
+        // console.log(item.parentNode.getElementsByClassName("cant")[0].value,"paren")
+        // console.log("nombre",item.name,window.location.host)
     })
 })
 console.log(buttons)

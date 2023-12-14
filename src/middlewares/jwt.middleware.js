@@ -8,10 +8,11 @@ export function jwtValidation(req,res,next){
         // console.log(auth)
         // const token = auth.split(" ")[1]
         const userToken = jwt.verify(token,SECRET)
-        console.log(userToken)
+        console.log(userToken, "token")
         req.user = userToken;
         next();
     } catch (error) {
         res.json({error:error.message})
+        console.log(error.message)
     }
 }
