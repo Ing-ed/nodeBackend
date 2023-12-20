@@ -1,9 +1,17 @@
 import { productModel } from "../models/products.models.js";
 
-class prodManager {
+class ProdManager {
     constructor(){
     }
-    async GetAll({limit, page, sort, query}){
+    async GetAll(){
+        try{
+            let result = await productModel.find().lean()
+            return result
+        } catch(error){
+            return null
+        }
+    }
+    async GetAllp({limit, page, sort, query}){
         console.log("products",limit, page, sort, query)
         try{
             console.log("busqueda")
@@ -78,4 +86,4 @@ class prodManager {
     }
 }
 
-export default prodManager
+export default ProdManager

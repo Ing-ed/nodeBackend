@@ -2,39 +2,46 @@ import { cartModel } from "../models/carts.model.js";
 
 class CartManager{
     constructor(){}
-    async GetById(cid){
+    async GetById(params){
+        let {cid} = params
         try{
             let carts = await cartModel.find();
             if(cid === undefined){
                 return({result:"success",payload:carts})
             }
-            let result = await cartModel.findOne(
-                {cartId:+cid}
-            ).populate('products')
+            let result = await cartModel.findOne({_id:cid}).populate('products.product').lean()
             return({result:"success",payload:result})
         } catch (error){
             return("error", error.message)
         }
     }
-    async CreateCart(body){
-        let {prodId,quantity} = body
-        console.log("1")
-        if((prodId === undefined) || (quantity === undefined)){return({result:"error",error:"Faltan datos"}) 
-            return
+    async getByUser({uid}){
+        try{
+            let cart = await cartModel.findOne({user:uid})
+            if(!cart){
+                return(null)
+            }
+            return(cart)
+        } catch(error){
+            return(null);
         }
+    }
+    async CreateCart(params){
+        let { uid } = params;
+        console.log(uid,"uid")
         try{
             console.log("2")
             let cartId = await cartModel.count()
             console.log(cartId)
             let result = await cartModel.create({
                 cartId: cartId +1,
-                products:[{product:prodId.toString(),quantity:quantity}]
+                user:uid
             })
             console.log("3")
             console.log("resultado",result._id.toString())
             let resp = await cartModel.findOne({_id:result._id}).populate({path:'products.product', select:'title description price'})
             // console.log(resp)
-            return({result:"Success",payload:result})
+            return(resp)
         } catch (error){
             return({result:"error",error:error.message});
         }

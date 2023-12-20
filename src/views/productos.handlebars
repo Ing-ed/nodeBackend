@@ -3,7 +3,10 @@
     <a id = logout href="/api/sessions/logout">Cerrar sesion</a href="">
     <a href="/cart/{{idCart}}">ir al carrito</a>
     <h3 id = "idCart" style="display: none">{{idCart}}</h3>
-    <a href="/api/sessions/current">Current</a>
+    <a href="/current">Info de usuario</a>
+    {{#if rol}}
+        <a href="/crearProducto">Ingresar nuevo producto</a>
+    {{/if}}
     <div id="productos">
         {{#each result}}
             <div class="prod">

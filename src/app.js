@@ -1,6 +1,7 @@
 import express from "express";
 import session from "express-session";
 import handlebars from 'express-handlebars'
+import exphb from 'express-handlebars'
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carrito.router.js'
 import viewRouter from './routes/views.router.js'
@@ -17,6 +18,7 @@ import { Server } from "socket.io";
 // import { ProductManager } from "./views/Dao/Products.js";
 // import { messageModel } from "./models/messages.models.js";
 import mongoose from 'mongoose'
+// import { options } from "nodemon/lib/config/index.js";
 
 // const manager = new ProductManager("productos.json")
 // let prods = []
@@ -27,6 +29,12 @@ import mongoose from 'mongoose'
 const app = express()
 //inicializar el motor de plantillas
 app.engine('handlebars', handlebars.engine())
+// handlebars.registerHelper('ifCond', (v1,v2) =>{
+//     if(v1 == v2){
+//         return options.fn(this)
+//     }
+//     return options.inverse(this)
+// })
 //indicar las rutas donde estan las vistas
 app.set('views', __dirname+'/views');
 //indicar que motor se quiere utilizar

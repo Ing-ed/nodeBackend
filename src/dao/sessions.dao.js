@@ -30,8 +30,8 @@ class SessionManager {
             if(!hashManager.CompareHash(body.pass,exist)){
                 return([null])
             }
-            const {firstName, lastName,rol} = exist
-            const token = tokenManager.CreateToken({firstName,lastName,rol})
+            const {firstName, lastName,email,rol} = exist
+            const token = tokenManager.CreateToken({firstName,lastName,email,rol})
             // console.log(token,"token")
             return([exist,token])
         }catch (error){

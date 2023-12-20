@@ -79,32 +79,6 @@ router.get("/logout", async (req,res) =>{
     
 })
 
-// router.get('/current', passport.authenticate("current",{session:false}), async(req, res)=>{
-//     // console.log(req)
-//     res.json(req.user)
-// })
-
-// //signup github
-// router.get("/autGithub",passport.authenticate('github',{failureRedirect:'/failGitHub',passReqToCallback:true,scope:["user:email"]}))
-
-// router.get("/gitCallback",passport.authenticate('github'),(req,res)=>{
-//     console.log(req.user)
-//     console.log("aca")
-//     const {firstName, lastName,email,rol} = req.user
-//     const token = TokenGen({firstName,lastName,email,rol})
-//     console.log(token)
-//     return res.cookie('auth',token).redirect(`/productos/${req.user._id}`)
-// })
-// router.get("/failGitHub",(req,res) =>{
-//     res.send("Error")
-// })
-
-// router.get("/current",passport.authenticate('jwt',{failureRedirect:'Err'}, async(req,res) =>{
-//     res.redirect("/current")
-// }))
-// router.get("/Err", (req,res) =>{
-//     res.redirect("/login/err");
-// })
 
 
 export default router;
