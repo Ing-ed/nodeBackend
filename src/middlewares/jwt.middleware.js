@@ -7,7 +7,7 @@ export function jwtValidation(req,res,next){
         const token = req.cookies['auth']
         // const token = auth.split(" ")[1]
         const userToken = jwt.verify(token,SECRET)
-        console.log(userToken, "token")
+        // console.log(userToken, "token")
         req.user = userToken;
         next();
     } catch (error) {

@@ -17,6 +17,6 @@ export function CompareHash(pass,user){
 
 //crear token
 export function TokenGen(user){
-    const token = jwt.sign(user,SECRET,{expiresIn:300})
+    const token = jwt.sign(user,SECRET,{expiresIn:900})
     return token;
 }

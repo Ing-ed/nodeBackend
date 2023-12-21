@@ -8,6 +8,7 @@ import viewRouter from './routes/views.router.js'
 import userRouter from './routes/user.router.js'
 import sessionRouter from './routes/sessions.router.js'
 import messageRouter from './routes/messages.router.js'
+import ticketRouter from './routes/tickets.router.js'
 import cookieParser from "cookie-parser";
 import MongoStore from 'connect-mongo'
 import passport from "passport";
@@ -68,6 +69,7 @@ app.use('/api/products',productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/users',userRouter);
 app.use('/api/sessions',sessionRouter)
+app.use('/api/tickets',ticketRouter)
 app.use('/messages',messageRouter);
 
 

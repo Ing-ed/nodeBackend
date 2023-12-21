@@ -4,18 +4,6 @@ const cartId = document.getElementById("idCart").innerHTML
 console.log(cartId,"id de carrito")
 buttons.map((item) =>{
     if(rol !== null){
-        // let deleteThis = document.createElement("button")
-        // deleteThis.innerHTML = "Borrar"
-        // deleteThis.addEventListener("clic",()=>{
-        //     console.log("click")
-        //     fetch(`http://${window.location.host}/api/products/${item.name}`,{
-        //         method:'PUT',
-        //         headers:{
-        //             'Content-Type':'application/json'
-        //         }
-        //     })
-        // })
-        // item.parentNode.appendChild(deleteThis)
         item.innerHTML = "Modificar stock"
         item.addEventListener('click',()=>{
             fetch(`http://${window.location.host}/api/products/${item.name}`,{

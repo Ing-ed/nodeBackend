@@ -1,10 +1,10 @@
 // import { ProductManager } from "../views/Dao/Products.js";
 import { Router } from "express";
-import prodManager from "../dao/products.dao.js";
+import ProdManager from "../dao/products.dao.js";
 const router = Router();
 
 // const manager = new ProductManager("productos.json");
-const manager = new prodManager()
+const manager = new ProdManager()
 // get
 router.get("/",async (req,res) =>{
     let {limit, page, sort, query} = req.query;

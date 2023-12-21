@@ -15,8 +15,33 @@
                 </div>
             {{/each}}
         {{/each}}
+    
+    <button id="finish" name = {{cid}}>Finalizar compra</button>
     {{!-- <script src="/js/addProds.js"></script>   --}}
     <script type="text/javascript">
+        let finish = document.getElementById("finish")
+        finish.addEventListener("click",()=>{
+            let amount = 0;
+            let prods = Array.prototype.slice.call( document.getElementsByClassName("prod"));
+            prods.map((item) => {
+                console.log(item.children[3].innerText.split(" ")[1])
+                amount += +item.children[3].innerText.split(" ")[1] * +item.children[4].innerText.split(" ")[1]
+            })
+            console.log("amount",amount)
+            console.log(prods,typeof prods)
+            {{!-- console.log(`http://${window.location.host}/api/tickets/${cartId}`) --}}
+            console.log("finalizando compra",Date())
+            fetch(`http://${window.location.host}/api/tickets/${finish.name}`,{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({
+                    dateTime:Date(),
+                    amount: amount
+                })
+            })
+        })
         let button = document.getElementById("Borrar")
         button.addEventListener('click',()=>{
             let name = button.name
