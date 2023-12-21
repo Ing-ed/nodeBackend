@@ -6,6 +6,10 @@ import { jwtValidation } from "../middlewares/jwt.middleware.js";
 import passport from "passport";
 // import { ProductManager } from "../views/Dao/Products.js";
 
+/*
+    Implementar con JWT un sistema por el cual se distinga usuario de admin
+ */
+
 const prodManager = new ProdManager()
 const cartManager = new CartManager()
 const userManager = new UserManager() 

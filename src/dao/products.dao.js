@@ -64,21 +64,20 @@ class ProdManager {
     async UpdateProd(pid,field,value){
         console.log(pid, field, value)
         try{
-            let products = await productModel.find();
-            let index = products.findIndex((p) => p.code === pid);
-            if(index <0 ){res.send({result:"error",error:"el producto no existe"})}
-            products[index][field] = value;
             let actualizacion = {$set:{}}
             actualizacion.$set[field] = value
-            let result = await productModel.updateOne({_id:products[index]._id},actualizacion)
+            console.log(actualizacion)
+            let result = await productModel.updateOne({_id:pid},actualizacion)
+            console.log(result)
             return({result:"success",payload:result})
         } catch (error) {
-            return({result:"error",error:error})
+            return({result:"error",error:error.message})
         }
     }
     async DeleteProd({pid}){
+        console.log(pid)
         try{
-            let result = await productModel.deleteOne({code:pid})
+            let result = await productModel.deleteOne({_id:pid})
             return({result:"success",payload:result})
         } catch(error){
             return({result:"error",error:error})

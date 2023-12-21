@@ -4,10 +4,30 @@
     <a href="/cart/{{idCart}}">ir al carrito</a>
     <h3 id = "idCart" style="display: none">{{idCart}}</h3>
     <a href="/current">Info de usuario</a>
-    {{#if rol}}
-        <a href="/crearProducto">Ingresar nuevo producto</a>
-    {{/if}}
     <div id="productos">
+        {{#if rol}}
+            <form id="addProd" action="/api/products" method="post">
+                {{!-- <label>prodId</label> --}}
+                {{!-- <input name ="prodId" type="text"> --}}
+                <label>Title</label>
+                <input name ="title" type="text">
+                <label>Description</label>
+                <input name ="description" type="text">
+                <label>Code</label>
+                <input name ="code" type="text">
+                <label>Price</label>
+                <input name ="price" type="number">
+                <label>Status</label>
+                <input name ="status" type="boolean">
+                <label>Stock</label>
+                <input name ="stock" type="number">
+                <label>Category</label>
+                <input name ="category" type="text">
+                {{!-- <label>thumbnails</label>
+                <input name ="thumbnails" type="text"> --}}
+                <input type="submit" value="Agregar" id = "Agregar">
+            </form>
+        {{/if}}
         {{#each result}}
             <div class="prod">
                 <div class = "info">
@@ -15,6 +35,7 @@
                     <p>{{this.description}}</p>
                     <p>{{this.category}}</p>
                     <p>{{this.price}}</p>
+                    <p>stock: {{this.stock}}</p>
                 </div>
                 <div class = "agregar">
                     <input type="number" class="cant" value="1">
