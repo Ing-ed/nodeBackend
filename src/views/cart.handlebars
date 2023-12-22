@@ -21,6 +21,9 @@
     <script type="text/javascript">
         let finish = document.getElementById("finish")
         finish.addEventListener("click",()=>{
+            fetch(`http://${window.location.host}/api/cart/${finish.name}/purchase`)
+        })
+        /*finish.addEventListener("click",()=>{
             let amount = 0;
             let prods = Array.prototype.slice.call( document.getElementsByClassName("prod"));
             prods.map((item) => {
@@ -53,6 +56,6 @@
                 }
             }) .then((r) => console.log(r.status))
             location.reload()
-        })
+        })*/
     </script>
 </div>

@@ -7,12 +7,12 @@ class CartManager{
         try{
             let carts = await cartModel.find();
             if(cid === undefined){
-                return({result:"success",payload:carts})
+                return({carts})
             }
             let result = await cartModel.findOne({_id:cid}).populate('products.product').lean()
-            return({result:"success",payload:result})
+            return({result})
         } catch (error){
-            return("error", error.message)
+            return(error.message)
         }
     }
     async getByUser({uid}){
@@ -44,6 +44,15 @@ class CartManager{
             return(resp)
         } catch (error){
             return({result:"error",error:error.message});
+        }
+    }
+    async UpdateProds(params,products){
+        let {cid} = params
+        try{
+            let result = await cartModel.updetOne({_id: cid},{$set:{products:producst}})
+            return (result);
+        }catch(error){
+            return (error.message)
         }
     }
     async UpdateCart(cid,body){
